@@ -1,6 +1,11 @@
+import { useSelector } from "react-redux"
 import logo from "../logo.svg"
+import { useEffect } from "react"
 
 const Home = () => {
+
+  const value = useSelector((store) => store.home.value)
+  useEffect(() => {console.log(value)}, [])
     return (
     <div className="App">
       <header className="App-header">
