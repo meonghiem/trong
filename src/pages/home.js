@@ -5,8 +5,8 @@ import { useEffect } from "react"
 const Home = () => {
 
   const value = useSelector((store) => store.home.value)
-  useEffect(() => {console.log(value)}, [])
-    return (
+  useEffect(() => { console.log(value) }, [value])
+  return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -19,11 +19,11 @@ const Home = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn React 1
         </a>
       </header>
     </div>
-    )
+  )
 }
 
 export default Home
