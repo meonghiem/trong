@@ -5,6 +5,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import axios from "axios";
 
 const Login = () => {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -18,7 +19,16 @@ const Login = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-
+    const handleClickSignIn = (event) => {
+        event.preventDefault();
+        // axios
+        //     .post("https://reqres.in/api/login", {
+        //         email: values.email,
+        //         password: values.password
+        //     })
+        //     .then(res => console.log(res))
+        //     .catch(err => console.error(err))
+    }
     return (
         <div>
             <Container fixed maxWidth="sm">
@@ -49,6 +59,8 @@ const Login = () => {
                                         }}
                                         variant="outlined"
                                         placeholder="Enter your email"
+                                        // Thêm onChange
+                                        onChange={(e) => setValues({ ...values, email: e.target.value })}
                                     />
                                 </Grid>
                                 {/* Enter password user */}
@@ -81,11 +93,13 @@ const Login = () => {
                                         }}
                                         variant="outlined"
                                         placeholder="Enter your password"
+                                        // Thêm onChange
+                                        onChange={(e) => setValues({ ...values, password: e.target.value })}
                                     />
                                 </Grid>
                                 {/* Submit */}
                                 <Grid item>
-                                    <Button variant="contained" endIcon={<ArrowForwardIcon />}>
+                                    <Button variant="contained" endIcon={<ArrowForwardIcon />} onClick={handleClickSignIn}>
                                         Sign In
                                     </Button>
                                 </Grid>
