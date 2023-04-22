@@ -1,0 +1,7 @@
+.link-text {
+    border-bottom: 1px solid transparent;
+  }
+  
+.link-text:hover {
+    border-bottom: 1px solid #000;
+}

@@ -7,6 +7,8 @@ import KeyIcon from '@mui/icons-material/Key';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import './styles/Login.css'
 
 const client = axios.create({
     baseURL: "http://localhost:3000/"
@@ -70,7 +72,7 @@ export default function Login() {
                     direction="column"
                     justifyContent="center"
                     style={{ minHeight: "100vh" }}>
-                    <Paper elevation={15} sx={{ padding: 4, margin: 5 }}>
+                    <Paper elevation={20} sx={{ padding: 4, margin: 5 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 1 }}>
                             <h1 style={{ color: 'dodgerblue' }}> SIGN IN </h1>
                         </Box>
@@ -137,9 +139,14 @@ export default function Login() {
                                 </Grid>
                                 {/* Submit */}
                                 <Grid item>
-                                    <Button variant="contained" endIcon={<ArrowForwardIcon />} onClick={handleClickSignIn}>
-                                        Sign In
-                                    </Button>
+                                    <Box sx={{ display: 'flex' }} justifyContent="space-between" alignItems="baseline">
+                                        <Button variant="contained" endIcon={<ArrowForwardIcon />} onClick={handleClickSignIn}>
+                                            Sign In
+                                        </Button>
+                                        <Link to="/sign-up" style={{ textDecoration: 'none' }}>
+                                            <span className="link-text">Sign up for an account here</span>
+                                        </Link>
+                                    </Box>
                                 </Grid>
                             </Grid>
                         </form>
