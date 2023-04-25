@@ -7,8 +7,8 @@ export const loginSlice = createSlice({
     token: "",
   },
   reducers: {
-    changeStateIsLogin: (state) => {
-      state.isLogin = !state.isLogin;
+    changeStateIsLogin: (state, action) => {
+      state.isLogin = action.payload.isLogin;
     },
     addToken: (state, action) => {
       state.token = action.payload.token;

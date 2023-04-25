@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import './styles/Login.css'
 import { changeStateIsLogin, addToken } from "../pages/loginSlice";
 import { useNavigate } from "react-router-dom";
+import validator from "validator";
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -40,38 +41,78 @@ export default function Login() {
             toast.error("You have not entered your password !");
             return;
         }
-        // Data gửi cho server
-        const dataSendToServer = {
-            email: values.email,
-            user_password: values.password
-        };
-        try {
-            const response = await axios.post("http://localhost:8001/api/login/email", dataSendToServer);
-            const data = response.data;
-            if (data.code === 0) {
-                // Lấy token user
-                const token = data.token;
-                // Thay đổi isLogin và token trong Store
-                dispatch(changeStateIsLogin);
-                dispatch(addToken({ token: token }));
-                // Thông báo thành công vào chuyển trang
-                toast.success(data.message);
-                navigate("/home");
+        // Nếu sử dụng email để đăng nhập.
+        if (validator.isEmail(values.email) && values.email.endsWith('@gmail.com')) {
+            // Data gửi cho server
+            const dataSendToServer = {
+                email: values.email,
+                user_password: values.password
+            };
+            try {
+                const response = await axios.post("http://localhost:8001/api/login/email", dataSendToServer);
+                const data = response.data;
+                if (data.code === 0) {
+                    // Lấy token user
+                    const token = data.token;
+                    // Thay đổi isLogin và token trong Store
+                    dispatch(changeStateIsLogin({ isLogin: true }));
+                    dispatch(addToken({ token: token }));
+                    // Thông báo thành công vào chuyển trang
+                    toast.success(data.message);
+                    navigate("/home");
+                }
+            } catch (error) {
+                const response = error.response;
+                const data = response.data;
+                if (data.code === 1) {
+                    toast.error(data.message);
+                    return;
+                }
+                if (data.code === 2) {
+                    toast.error(data.message);
+                    return;
+                }
+                if (data.code === 3) {
+                    toast.error(data.message);
+                    return;
+                }
             }
-        } catch (error) {
-            const response = error.response;
-            const data = response.data;
-            if (data.code === 1) {
-                toast.error(data.message);
-                return;
-            }
-            if (data.code === 2) {
-                toast.error(data.message);
-                return;
-            }
-            if (data.code === 3) {
-                toast.error(data.message);
-                return;
+        }
+        // Sử dụng username đăng nhập
+        else {
+            // Data gửi cho server
+            const dataSendToServer = {
+                user_name: values.email,
+                user_password: values.password
+            };
+            try {
+                const response = await axios.post("http://localhost:8001/api/login/username", dataSendToServer);
+                const data = response.data;
+                if (data.code === 0) {
+                    // Lấy token user
+                    const token = data.token;
+                    // Thay đổi isLogin và token trong Store
+                    dispatch(changeStateIsLogin({ isLogin: true }));
+                    dispatch(addToken({ token: token }));
+                    // Thông báo thành công vào chuyển trang
+                    toast.success(data.message);
+                    navigate("/home");
+                }
+            } catch (error) {
+                const response = error.response;
+                const data = response.data;
+                if (data.code === 1) {
+                    toast.error(data.message);
+                    return;
+                }
+                if (data.code === 2) {
+                    toast.error(data.message);
+                    return;
+                }
+                if (data.code === 3) {
+                    toast.error(data.message);
+                    return;
+                }
             }
         }
     }
@@ -99,7 +140,7 @@ export default function Login() {
                                         fullWidth
                                         type={"text"}
                                         id="emailUser"
-                                        label="Email"
+                                        label="Email or Username"
                                         value={values.email}
                                         // Thêm icon AccountCircle vào đầu TextField
                                         InputProps={{
@@ -110,7 +151,7 @@ export default function Login() {
                                             ),
                                         }}
                                         variant="outlined"
-                                        placeholder="Enter your name"
+                                        placeholder="Enter your email or username"
                                         // Thêm onChange
                                         onChange={(e) => setValues({ ...values, email: e.target.value })}
                                     />
