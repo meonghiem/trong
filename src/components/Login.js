@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Container } from "@mui/system";
 import { Grid, Paper, TextField, Button, InputAdornment, IconButton, Box } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -9,12 +10,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import './styles/Login.css'
-
-const client = axios.create({
-    baseURL: "http://localhost:3000/"
-})
+import { changeStateIsLogin, addToken } from "../pages/loginSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
     const [values, setValues] = useState({
@@ -30,36 +31,48 @@ export default function Login() {
     };
     const handleClickSignIn = async (event) => {
         event.preventDefault();
-
+        // Kiểm tra xem bỏ trống dữ liệu hay không
+        if (values.email === "") {
+            toast.error("You have not entered your email !");
+            return;
+        }
+        if (values.password === "") {
+            toast.error("You have not entered your password !");
+            return;
+        }
+        // Data gửi cho server
+        const dataSendToServer = {
+            email: values.email,
+            user_password: values.password
+        };
         try {
-            const response = await client.post("/api/login/email", { email: values.email, password: values.password });
+            const response = await axios.post("http://localhost:8001/api/login/email", dataSendToServer);
             const data = response.data;
-            // Đăng nhập thành công
             if (data.code === 0) {
+                // Lấy token user
                 const token = data.token;
-                const user = JSON.parse(data.user);
-                // lưu token và thông tin user vào localStorage
-                localStorage.setItem('token', token);
-                localStorage.setItem('user', JSON.stringify(user));
-                // Thông báo đăng nhập thành công
-                toast.success("Đăng nhập thành công !", { autoClose: 1500 })
-            }
-            // Thiếu tham số
-            else if (data.code === 1) {
-                toast.error("Nhập thiếu dữ liệu !", { autoClose: 1500 })
-            }
-            // Không tồn tại user ứng với email này
-            else if (data.code === 2) {
-                toast.error("Không tồn tại người dùng !", { autoClose: 1500 })
-            }
-            // Mật khẩu không chính xác
-            else {
-                toast.error("Mật khẩu không chính xác !", { autoClose: 1500 })
+                // Thay đổi isLogin và token trong Store
+                dispatch(changeStateIsLogin);
+                dispatch(addToken({ token: token }));
+                // Thông báo thành công vào chuyển trang
+                toast.success(data.message);
+                navigate("/home");
             }
         } catch (error) {
-            // Lỗi khi kết nối đến server
-            console.log(error)
-            toast.error("Có lỗi khi kết nối đến server !", { autoClose: 2000 })
+            const response = error.response;
+            const data = response.data;
+            if (data.code === 1) {
+                toast.error(data.message);
+                return;
+            }
+            if (data.code === 2) {
+                toast.error(data.message);
+                return;
+            }
+            if (data.code === 3) {
+                toast.error(data.message);
+                return;
+            }
         }
     }
 
@@ -137,13 +150,13 @@ export default function Login() {
                                         onChange={(e) => setValues({ ...values, password: e.target.value })}
                                     />
                                 </Grid>
-                                {/* Submit */}
+                                {/* Submit và signup*/}
                                 <Grid item>
                                     <Box sx={{ display: 'flex' }} justifyContent="space-between" alignItems="baseline">
                                         <Button variant="contained" endIcon={<ArrowForwardIcon />} onClick={handleClickSignIn}>
                                             Sign In
                                         </Button>
-                                        <Link to="/sign-up" style={{ textDecoration: 'none' }}>
+                                        <Link to="/signup" style={{ textDecoration: 'none' }}>
                                             <span className="link-text">Sign up for an account here</span>
                                         </Link>
                                     </Box>

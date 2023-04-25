@@ -6,22 +6,93 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import validator from "validator";
+
 
 export default function SignUp() {
     const [userName, setUserName] = useState("");
     const [emailUser, setEmailUser] = useState("");
+    const [errEmail, setErrEmail] = useState("");
     const [passwordUser, setPasswordUser] = useState("");
-    const [passwordUserConfirm, setPasswordUserConfirm] = useState("")
+    const [passwordUserConfirm, setPasswordUserConfirm] = useState("");
+    const [errPasswordUserConfirm, setErrPasswordUserConfirm] = useState("");
     const [gender, setGender] = useState("");
     const [phone, setPhone] = useState("");
+    const navigate = useNavigate()
 
     useEffect(() => {
         setPasswordUserConfirm("")
-    }, [passwordUser])
+    }, [passwordUser]);
 
-    const handleClickSignUp = () => {
-        console.log(`${userName} + ${emailUser} + ${passwordUser} + ${passwordUserConfirm} + ${gender} + ${phone}`)
-        toast.success("Đăng ký thành công !")
+    useEffect(() => {
+        if (!(validator.isEmail(emailUser) && emailUser.endsWith('@gmail.com') && emailUser !== "")) {
+            setErrEmail("Invalid email");
+        }
+        else {
+            setErrEmail("");
+        }
+    }, [emailUser]);
+
+    useEffect(() => {
+        console.log("pass", passwordUser);
+        console.log("confirm", passwordUserConfirm);
+        if ((passwordUser !== passwordUserConfirm) && passwordUserConfirm !== "") {
+            setErrPasswordUserConfirm("Confirmation password is incorrect");
+        }
+        if (passwordUser === passwordUserConfirm) {
+            setErrPasswordUserConfirm("Confirmation password is correct")
+        }
+    }, [passwordUserConfirm, passwordUser]);
+
+    const handleClickSignUp = async (event) => {
+        event.preventDefault();
+        if (userName === "" || emailUser === "" || passwordUser === "" || passwordUser === "" || passwordUserConfirm === "" || gender === "" || phone === "") {
+            toast.info("Please enter full data !");
+            return;
+        }
+        else if (passwordUser !== passwordUserConfirm) {
+            toast.info("Confirmation password is incorrect !");
+            return;
+        }
+        const dataSendToServer = {
+            email: emailUser,
+            user_password: passwordUser,
+            confirm_password: passwordUserConfirm,
+            user_name: userName,
+            gender: gender,
+            phone: phone,
+        };
+        try {
+            const response = await axios.post("http://localhost:8001/api/signup", dataSendToServer);
+            const data = response.data;
+            // Thông báo thành công
+            if (data.code === 0) {
+                toast.success(data.message);
+                navigate('/');
+            }
+
+        } catch (error) {
+            const response = error.response;
+            const data = response.data;
+            if (data.code === 1) {
+                toast.error(data.message);
+                return;
+            }
+            if (data.code === 2) {
+                toast.error(data.message);
+                return;
+            }
+            if (data.code === 3) {
+                toast.error(data.message);
+                return;
+            }
+            if (data.code === 4) {
+                toast.error(data.message);
+                return;
+            }
+        }
     }
 
     return (
@@ -79,6 +150,7 @@ export default function SignUp() {
                                         variant="outlined"
                                         placeholder="Please enter your email"
                                         onChange={(e) => setEmailUser(e.target.value)}
+                                        helperText={emailUser === "" ? "" : errEmail}
                                     />
                                 </Grid>
                                 {/* Password user */}
@@ -123,6 +195,7 @@ export default function SignUp() {
                                         onChange={(e) => setPasswordUserConfirm(e.target.value)}
                                         //Cần nhập passwordUser trước
                                         disabled={passwordUser === ""}
+                                        helperText={passwordUserConfirm === "" ? "" : errPasswordUserConfirm}
                                     />
                                 </Grid>
                                 {/* Selection gender */}
