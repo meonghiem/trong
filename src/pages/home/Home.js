@@ -31,6 +31,30 @@ export default function Home() {
         maHp: "IT4272",
         endDate: "01/03/2023",
       },
+      {
+        id: 4,
+        imgUrl:
+          "https://soict.daotao.ai/asset-v1:SoICT+IT4272+2022-1+type@asset+block@Capture.JPG",
+        name: "Hệ thống máy tính - Thi cuối kỳ 2022-1",
+        maHp: "IT4272",
+        endDate: "01/03/2023",
+      },
+      {
+        id: 5,
+        imgUrl:
+          "https://soict.daotao.ai/asset-v1:SoICT+IT4272+2022-1+type@asset+block@Capture.JPG",
+        name: "Hệ thống máy tính - Thi cuối kỳ 2022-1",
+        maHp: "IT4272",
+        endDate: "01/03/2023",
+      },
+      {
+        id: 6,
+        imgUrl:
+          "https://soict.daotao.ai/asset-v1:SoICT+IT4272+2022-1+type@asset+block@Capture.JPG",
+        name: "Hệ thống máy tính - Thi cuối kỳ 2022-1",
+        maHp: "IT4272",
+        endDate: "01/03/2023",
+      },
     ];
   }, []);
 
