@@ -9,8 +9,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import './styles/Login.css'
-import { changeStateIsLogin, addToken } from "../pages/loginSlice";
+import '../styles/Login.css'
+import { changeStateIsLogin, addToken } from "../slice/loginSlice";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
 
