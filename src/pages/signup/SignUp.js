@@ -36,6 +36,8 @@ export default function SignUp() {
     }, [emailUser]);
 
     useEffect(() => {
+        console.log("pass", passwordUser);
+        console.log("confirm", passwordUserConfirm);
         if ((passwordUser !== passwordUserConfirm) && passwordUserConfirm !== "") {
             setErrPasswordUserConfirm("Confirmation password is incorrect");
         }
@@ -50,12 +52,8 @@ export default function SignUp() {
             toast.info("Please enter full data !");
             return;
         }
-        if (passwordUser !== passwordUserConfirm) {
+        else if (passwordUser !== passwordUserConfirm) {
             toast.info("Confirmation password is incorrect !");
-            return;
-        }
-        if (errEmail !== "") {
-            toast.info("Invalid Email", { autoClose: 1500 });
             return;
         }
         const dataSendToServer = {
