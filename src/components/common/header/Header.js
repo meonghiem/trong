@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from "react-router-dom";
 
-const pages = ["Home", "List exams", "Create exam"];
+const pages = ["Home", "List exams", "Create exam", "Result Exams"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header(props) {

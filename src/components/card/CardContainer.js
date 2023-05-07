@@ -42,13 +42,35 @@ export default function CardContainer(props) {
             >
               {props.maHp}
             </Typography>
-            <Typography
+            {props.endDate && <Typography
               variant="subtitle1"
               color="text.secondary"
               component="div"
             >
               Ended - {props.endDate}
-            </Typography>
+            </Typography>}
+            {props.Time && <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
+              Time - {props.Time}
+            </Typography>}
+            {props.point && (
+              // <Typography
+              //   variant="subtitle2"
+              //   color="success.main"
+              //   component="div"
+              // >
+              //   {props.point} / 10
+              // </Typography>
+              <div>
+                Point -{" "}
+                <div style={{ color: "red", display: "inline-block" }}>
+                  {props.point}/10
+                </div>
+              </div>
+            )}
           </CardContent>
           {/* <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
           <IconButton aria-label="previous">
@@ -70,8 +92,18 @@ export default function CardContainer(props) {
           </IconButton>
         </Box> */}
           <CardActions>
-            <Button size="small">Share</Button>
-            <Button size="small">Start</Button>
+            {!props.point ? (
+              <>
+                <Button size="small">Share</Button>
+                <Button size="small">Start</Button>
+              </>
+            ) : (
+              <>
+                <Button size="small" color="primary">
+                  View Detail Result
+                </Button>
+              </>
+            )}
           </CardActions>
         </Box>
       </Card>
