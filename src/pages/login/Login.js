@@ -17,7 +17,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import "../../components/styles/Login.css";
+import "../../styles/Login.css";
 import { changeStateIsLogin, addToken } from "./loginSlice";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
@@ -42,11 +42,11 @@ export default function Login() {
     event.preventDefault();
     // Kiểm tra xem bỏ trống dữ liệu hay không
     if (values.email === "") {
-      toast.error("You have not entered your email !");
+      toast.error("You have not entered your email !", { autoClose: 1500 });
       return;
     }
     if (values.password === "") {
-      toast.error("You have not entered your password !");
+      toast.error("You have not entered your password !", { autoClose: 1500 });
       return;
     }
     // Nếu sử dụng email để đăng nhập.
@@ -72,22 +72,22 @@ export default function Login() {
           dispatch(changeStateIsLogin({ isLogin: true }));
           dispatch(addToken({ token: token }));
           // Thông báo thành công vào chuyển trang
-          toast.success(data.message);
+          toast.success(data.message, { autoClose: 1500 });
           navigate("/home");
         }
       } catch (error) {
         const response = error.response;
         const data = response.data;
         if (data.code === 1) {
-          toast.error(data.message);
+          toast.error(data.message, { autoClose: 1500 });
           return;
         }
         if (data.code === 2) {
-          toast.error(data.message);
+          toast.error(data.message, { autoClose: 1500 });
           return;
         }
         if (data.code === 3) {
-          toast.error(data.message);
+          toast.error(data.message, { autoClose: 1500 });
           return;
         }
       }
@@ -112,22 +112,22 @@ export default function Login() {
           dispatch(changeStateIsLogin({ isLogin: true }));
           dispatch(addToken({ token: token }));
           // Thông báo thành công vào chuyển trang
-          toast.success(data.message);
+          toast.success(data.message, { autoClose: 1500 });
           navigate("/home");
         }
       } catch (error) {
         const response = error.response;
         const data = response.data;
         if (data.code === 1) {
-          toast.error(data.message);
+          toast.error(data.message, { autoClose: 1500 });
           return;
         }
         if (data.code === 2) {
-          toast.error(data.message);
+          toast.error(data.message, { autoClose: 1500 });
           return;
         }
         if (data.code === 3) {
-          toast.error(data.message);
+          toast.error(data.message, { autoClose: 1500 });
           return;
         }
       }
@@ -181,6 +181,7 @@ export default function Login() {
                     onChange={(e) =>
                       setValues({ ...values, email: e.target.value })
                     }
+                    title="Enter your email or username"
                   />
                 </Grid>
                 {/* Enter password user */}
@@ -218,6 +219,7 @@ export default function Login() {
                     onChange={(e) =>
                       setValues({ ...values, password: e.target.value })
                     }
+                    title="Enter your password"
                   />
                 </Grid>
                 {/* Submit và signup*/}
@@ -231,10 +233,15 @@ export default function Login() {
                       variant="contained"
                       endIcon={<ArrowForwardIcon />}
                       onClick={handleClickSignIn}
+                      title="Click to sign in"
                     >
                       Sign In
                     </Button>
-                    <Link to="/signup" style={{ textDecoration: "none" }}>
+                    <Link
+                      to="/signup"
+                      style={{ textDecoration: "none" }}
+                      title="Click to sign up"
+                    >
                       <span className="link-text">
                         Sign up for an account here
                       </span>
