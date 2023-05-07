@@ -21,6 +21,7 @@ import "../../styles/Login.css";
 import { changeStateIsLogin, addToken } from "./loginSlice";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
+import Cookies from 'js-cookie';
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -65,6 +66,8 @@ export default function Login() {
           // Thay đổi isLogin và token trong Store
           dispatch(changeStateIsLogin({ isLogin: true }));
           dispatch(addToken({ token: token }));
+          // Lưu token vào Cookies
+          Cookies.set('token', token, {});
           // Thông báo thành công vào chuyển trang
           toast.success(data.message, { autoClose: 1500 });
           navigate("/home");
@@ -102,6 +105,8 @@ export default function Login() {
           // Thay đổi isLogin và token trong Store
           dispatch(changeStateIsLogin({ isLogin: true }));
           dispatch(addToken({ token: token }));
+          // Lưu token vào Cookies
+          Cookies.set('token', token, {});
           // Thông báo thành công vào chuyển trang
           toast.success(data.message, { autoClose: 1500 });
           navigate("/home");

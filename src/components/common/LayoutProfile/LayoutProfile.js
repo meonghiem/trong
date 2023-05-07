@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import EmailIcon from '@mui/icons-material/Email';
 import BadgeIcon from '@mui/icons-material/Badge';
@@ -9,8 +9,13 @@ import StarIcon from '@mui/icons-material/Star';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import CreateIcon from '@mui/icons-material/Create';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectToken } from "../../../pages/login/loginSlice";
 
 export default function LayoutProfile() {
+    //Lấy token
+    const token = useSelector(selectToken);
     // Fake data
     const email = 'trieunguyen241102@gmail.com';
     const userName = 'trieunguyen2411';
@@ -24,6 +29,23 @@ export default function LayoutProfile() {
     const month = now.getMonth() + 1;
     const year = now.getFullYear();
     const createdAt = `${day}/${month}/${year}`;
+
+    useEffect(() => {
+        console.log("Token:", token);
+        async function fetchData() {
+            try {
+                const response = await axios.get("http://localhost:8001/api/user/:id", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                console.log(response);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, [token]);
 
     //Thay đổi phone
     const [openChangePhone, SetOpenChangePhone] = useState(false);
