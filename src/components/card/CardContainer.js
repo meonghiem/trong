@@ -49,6 +49,16 @@ export default function CardContainer(props) {
             >
               Ended - {props.endDate}
             </Typography>
+            {props.point && (
+              // <Typography
+              //   variant="subtitle2"
+              //   color="success.main"
+              //   component="div"
+              // >
+              //   {props.point} / 10
+              // </Typography>
+              <div style={{ color: "red" }}>{props.point}/10</div>
+            )}
           </CardContent>
           {/* <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
           <IconButton aria-label="previous">
@@ -70,8 +80,18 @@ export default function CardContainer(props) {
           </IconButton>
         </Box> */}
           <CardActions>
-            <Button size="small">Share</Button>
-            <Button size="small">Start</Button>
+            {!props.point ? (
+              <>
+                <Button size="small">Share</Button>
+                <Button size="small">Start</Button>
+              </>
+            ) : (
+              <>
+                <Button size="small" color="primary">
+                  View Detail Result
+                </Button>
+              </>
+            )}
           </CardActions>
         </Box>
       </Card>
