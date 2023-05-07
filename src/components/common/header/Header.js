@@ -10,10 +10,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import MenuItem from "@mui/material/MenuItem";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 
-const pages = ["Home", "List exams", "Create exam"];
+const pages = ["Home", "List exams", "Create exam", "Result Exams"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header(props) {
@@ -38,31 +38,34 @@ function Header(props) {
 
   const handleClickHomeIcon = () => {
     navigate("/home");
-  }
+  };
 
   const handleClickItemMenu = (page) => {
     const url = `/${page.toLowerCase().replace(" ", "_")}`;
     navigate(url);
     handleCloseNavMenu();
-  }
+  };
 
   const handleClickUserMenu = (setting) => {
     if (setting === "Logout") {
-      navigate('/');
-    }
-    else {
+      navigate("/");
+    } else {
       const url = `/${setting.toLowerCase().replace(" ", "_")}`;
       navigate(url);
     }
     handleCloseUserMenu();
-  }
+  };
 
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar>
           {/* Icon Home */}
-          <IconButton onClick={handleClickHomeIcon} size="large" className="icon-button">
+          <IconButton
+            onClick={handleClickHomeIcon}
+            size="large"
+            className="icon-button"
+          >
             <HomeIcon sx={{ fontSize: 45 }} />
           </IconButton>
           {/* Tạo box, box này chứa icon Menu, và các MenuItem sử dụng khi người dùng thu nhỏ màn hình */}
@@ -99,7 +102,10 @@ function Header(props) {
             >
               {pages.map((page, index) => {
                 return (
-                  <MenuItem key={index} onClick={() => handleClickItemMenu(page)}>
+                  <MenuItem
+                    key={index}
+                    onClick={() => handleClickItemMenu(page)}
+                  >
                     <Typography textAlign="center" variant="h6" noWrap>
                       {page}
                     </Typography>
@@ -118,23 +124,29 @@ function Header(props) {
                   className="icon-button"
                   sx={{
                     my: 2,
-                    borderRadius: '0px',
-                    color: `${(props.page === page) ? "dodgerblue" : "white"}`,
+                    borderRadius: "0px",
+                    color: `${props.page === page ? "dodgerblue" : "white"}`,
                     display: "block",
                     textTransform: "none",
                     fontSize: "18px",
                     fontSizeAdjust: "none",
-                    borderLeft: `${(props.page === page) ? "3px solid dodgerblue" : "0px"}`
+                    borderLeft: `${
+                      props.page === page ? "3px solid dodgerblue" : "0px"
+                    }`,
                   }}
                 >
                   {page}
                 </Button>
-              )
+              );
             })}
           </Box>
           {/* Tạo Box, bao gồm Icon Avatar và các MenuItem hiển thị khi người dùng click vào */}
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} className="icon-button">
+            <IconButton
+              onClick={handleOpenUserMenu}
+              sx={{ p: 0 }}
+              className="icon-button"
+            >
               <Avatar />
             </IconButton>
             <Menu
@@ -154,19 +166,18 @@ function Header(props) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting, index) => (
-                <MenuItem key={index} onClick={() => handleClickUserMenu(setting)}>
-                  <Typography
-                    textAlign="center"
-                  >
-                    {setting}
-                  </Typography>
+                <MenuItem
+                  key={index}
+                  onClick={() => handleClickUserMenu(setting)}
+                >
+                  <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
         </Toolbar>
       </Container>
-    </AppBar >
+    </AppBar>
   );
 }
 export default Header;
