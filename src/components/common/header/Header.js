@@ -109,7 +109,7 @@ function Header(props) {
             </Menu>
           </Box>
           {/* Tạo các Button có nhãn gồm các page khi người dùng để màn hình trạng thái lớn*/}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex", paddingLeft: '20px', marginLeft: '20px' } }}>
             {pages.map((page, index) => {
               return (
                 <Button
@@ -119,12 +119,14 @@ function Header(props) {
                   sx={{
                     my: 2,
                     borderRadius: '0px',
-                    color: `${(props.page === page) ? "dodgerblue" : "white"}`,
+                    color: `${(props.page === page) ? "dodgerblue" : "black"}`,
                     display: "block",
                     textTransform: "none",
                     fontSize: "18px",
                     fontSizeAdjust: "none",
-                    borderLeft: `${(props.page === page) ? "3px solid dodgerblue" : "0px"}`
+                    borderLeft: `${(props.page === page) ? "3px solid dodgerblue" : "3px solid black"}`,
+                    paddingLeft: '20px',
+                    paddingRight: '20px',
                   }}
                 >
                   {page}
