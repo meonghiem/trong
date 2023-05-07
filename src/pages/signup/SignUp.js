@@ -36,8 +36,6 @@ export default function SignUp() {
     }, [emailUser]);
 
     useEffect(() => {
-        console.log("pass", passwordUser);
-        console.log("confirm", passwordUserConfirm);
         if ((passwordUser !== passwordUserConfirm) && passwordUserConfirm !== "") {
             setErrPasswordUserConfirm("Confirmation password is incorrect");
         }
@@ -48,12 +46,19 @@ export default function SignUp() {
 
     const handleClickSignUp = async (event) => {
         event.preventDefault();
+        // Nếu người dùng chưa nhập đủ dữ liệu thì đưa ra thông báo
         if (userName === "" || emailUser === "" || passwordUser === "" || passwordUser === "" || passwordUserConfirm === "" || gender === "" || phone === "") {
             toast.info("Please enter full data !");
             return;
         }
-        else if (passwordUser !== passwordUserConfirm) {
+        // Nếu người dùng nhập mật khẩu xác minh sai
+        if (passwordUser !== passwordUserConfirm) {
             toast.info("Confirmation password is incorrect !");
+            return;
+        }
+        // Nếu người dùng nhập địa chỉ email không hợp lệ
+        if (errEmail !== "") {
+            toast.info("Invalid Email", { autoClose: 1500 });
             return;
         }
         const dataSendToServer = {
@@ -232,7 +237,10 @@ export default function SignUp() {
                                     />
                                 </Grid>
                                 <Grid item>
-                                    <Button variant="contained" onClick={handleClickSignUp}>
+                                    <Button
+                                        variant="contained"
+                                        onClick={handleClickSignUp}
+                                        title="Click to accept sign up">
                                         Sign Up
                                     </Button>
                                 </Grid>

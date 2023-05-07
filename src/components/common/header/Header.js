@@ -3,21 +3,20 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
+import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from "react-router-dom";
 
-const pages = ["Discovery", "Courses"];
+const pages = ["Home", "List exams", "Create exam"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-function Header() {
+function Header(props) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -37,29 +36,36 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            DaoTao.Ai
-          </Typography>
+  const handleClickHomeIcon = () => {
+    navigate("/home");
+  }
 
+  const handleClickItemMenu = (page) => {
+    const url = `/${page.toLowerCase().replace(" ", "_")}`;
+    navigate(url);
+    handleCloseNavMenu();
+  }
+
+  const handleClickUserMenu = (setting) => {
+    if (setting === "Logout") {
+      navigate('/');
+    }
+    else {
+      const url = `/${setting.toLowerCase().replace(" ", "_")}`;
+      navigate(url);
+    }
+    handleCloseUserMenu();
+  }
+
+  return (
+    <AppBar position="fixed">
+      <Container maxWidth="xl">
+        <Toolbar>
+          {/* Icon Home */}
+          <IconButton onClick={handleClickHomeIcon} size="large" className="icon-button">
+            <HomeIcon sx={{ fontSize: 45 }} />
+          </IconButton>
+          {/* Tạo box, box này chứa icon Menu, và các MenuItem sử dụng khi người dùng thu nhỏ màn hình */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -68,9 +74,11 @@ function Header() {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
+              className="icon-button"
             >
               <MenuIcon />
             </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -89,50 +97,46 @@ function Header() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              {pages.map((page, index) => {
+                return (
+                  <MenuItem key={index} onClick={() => handleClickItemMenu(page)}>
+                    <Typography textAlign="center" variant="h6" noWrap>
+                      {page}
+                    </Typography>
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography>
+          {/* Tạo các Button có nhãn gồm các page khi người dùng để màn hình trạng thái lớn*/}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            {pages.map((page, index) => {
+              return (
+                <Button
+                  key={index}
+                  onClick={() => handleClickItemMenu(page)}
+                  className="icon-button"
+                  sx={{
+                    my: 2,
+                    borderRadius: '0px',
+                    color: `${(props.page === page) ? "dodgerblue" : "white"}`,
+                    display: "block",
+                    textTransform: "none",
+                    fontSize: "18px",
+                    fontSizeAdjust: "none",
+                    borderLeft: `${(props.page === page) ? "3px solid dodgerblue" : "0px"}`
+                  }}
+                >
+                  {page}
+                </Button>
+              )
+            })}
           </Box>
-
+          {/* Tạo Box, bao gồm Icon Avatar và các MenuItem hiển thị khi người dùng click vào */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} className="icon-button">
+              <Avatar />
+            </IconButton>
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -149,13 +153,10 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+              {settings.map((setting, index) => (
+                <MenuItem key={index} onClick={() => handleClickUserMenu(setting)}>
                   <Typography
                     textAlign="center"
-                    onClick={() => {
-                      navigate("/login");
-                    }}
                   >
                     {setting}
                   </Typography>
@@ -165,7 +166,7 @@ function Header() {
           </Box>
         </Toolbar>
       </Container>
-    </AppBar>
+    </AppBar >
   );
 }
 export default Header;
