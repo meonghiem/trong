@@ -57,7 +57,12 @@ export default function CardContainer(props) {
               // >
               //   {props.point} / 10
               // </Typography>
-              <div style={{ color: "red" }}>{props.point}/10</div>
+              <div>
+                Point -{" "}
+                <div style={{ color: "red", display: "inline-block" }}>
+                  {props.point}/10
+                </div>
+              </div>
             )}
           </CardContent>
           {/* <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
