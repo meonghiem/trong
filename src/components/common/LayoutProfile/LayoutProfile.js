@@ -11,36 +11,41 @@ import CreateIcon from '@mui/icons-material/Create';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axios from "axios";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 export default function LayoutProfile() {
-    //Lấy token
+    // Lấy token
     const token = Cookies.get('token')
-    // Fake data
-    const email = 'trieunguyen241102@gmail.com';
-    const userName = 'trieunguyen2411';
-    const phone = '2313123123';
-    const gender = 'male';
-    const role = 'user';
-    const rank = 'beginer';
-    // Lấy phần thời gian
-    const now = new Date();
-    const day = now.getDate();
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
-    const createdAt = `${day}/${month}/${year}`;
+    // Thông tin của user
+    const [email, setEmail] = useState("");
+    const [userName, setUserName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [gender, setGender] = useState("");
+    const [role, setRole] = useState("");
+    const [rank, setRank] = useState("");
+    const [createdAt, setCreatedAt] = useState("");
 
     useEffect(() => {
-        console.log("Token:", token);
         async function fetchData() {
             try {
-                const response = await axios.get("http://localhost:8001/api/user/:id", {
+                const id = Cookies.get('id');
+                const response = await axios.get(`http://localhost:8001/api/user/${id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                console.log(response);
+                // console.log(response);
+                const data = response.data;
+                setEmail(data.user.email);
+                setUserName(data.user.user_name);
+                setPhone(data.user.phone);
+                setGender(data.user.gender);
+                setRole(data.user.role);
+                setRank(data.user.rank);
+                setCreatedAt(data.user.createdAt);
             } catch (error) {
-                console.log(error);
+                toast.error("An error occurred while connecting to the server", { autoClose: 1500 })
+                // console.log(error);
             }
         }
         fetchData();
@@ -110,6 +115,7 @@ export default function LayoutProfile() {
                     </Grid>
                     <Grid item sx={{ paddingRight: '20px' }} xs={3}>
                         <TextField
+                            onChange={(event) => { setPhone(event.target.value) }}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">

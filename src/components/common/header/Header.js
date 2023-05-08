@@ -55,7 +55,9 @@ function Header(props) {
     if (setting === "Logout") {
       dispatch(changeStateIsLogin({ isLogin: false }));
       dispatch(resetToken())
+      // Xử lý lưu trữ trong Cookies
       Cookies.remove('token');
+      Cookies.remove('id');
       Cookies.set('isLogin', false);
       navigate('/');
     }

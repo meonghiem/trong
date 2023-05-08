@@ -30,6 +30,7 @@ export default function Login() {
   useEffect(() => {
     Cookies.set('isLogin', false);
     Cookies.remove('token');
+    Cookies.remove('id');
   }, [])
 
   const [showPassword, setShowPassword] = useState(false);
@@ -70,10 +71,11 @@ export default function Login() {
           const token = data.token;
           // Thay đổi isLogin và token trong Store
           dispatch(changeStateIsLogin({ isLogin: true }));
-          dispatch(({ token: token }));
+          dispatch(addToken({ token: token }));
           // Lưu token vào Cookies, thay đổi isLogin = true trong Token
-          Cookies.set('token', token, { expires: 4 / 24 });
-          Cookies.set('isLogin', true, { expires: 4 / 24 });
+          Cookies.set('token', token, { expires: 1 });
+          Cookies.set('isLogin', true);
+          Cookies.set('id', data.user.id);
           // Thông báo thành công vào chuyển trang
           toast.success(data.message, { autoClose: 1500 });
           navigate("/home");
@@ -112,8 +114,9 @@ export default function Login() {
           dispatch(changeStateIsLogin({ isLogin: true }));
           dispatch(addToken({ token: token }));
           // Lưu token vào Cookies, thay đổi isLogin = true trong Token
-          Cookies.set('token', token, { expires: 4 / 24 });
-          Cookies.set('isLogin', true, { expires: 4 / 24 });
+          Cookies.set('token', token, { expires: 1 });
+          Cookies.set('isLogin', true);
+          Cookies.set('id', data.user.id);
           // Thông báo thành công vào chuyển trang
           toast.success(data.message, { autoClose: 1500 });
           navigate("/home");
