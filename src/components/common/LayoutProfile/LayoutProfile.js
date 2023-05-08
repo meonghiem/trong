@@ -10,12 +10,11 @@ import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import CreateIcon from '@mui/icons-material/Create';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { selectToken } from "../../../pages/login/loginSlice";
+import Cookies from "js-cookie";
 
 export default function LayoutProfile() {
     //Lấy token
-    const token = useSelector(selectToken);
+    const token = Cookies.get('token')
     // Fake data
     const email = 'trieunguyen241102@gmail.com';
     const userName = 'trieunguyen2411';

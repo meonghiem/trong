@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Container } from "@mui/system";
 import {
@@ -26,6 +26,11 @@ import Cookies from 'js-cookie';
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // Lần đầu vào :/ thì sẽ đặt isLogin bằng false
+  useEffect(() => {
+    Cookies.set('isLogin', false);
+    Cookies.remove('token');
+  }, [])
 
   const [showPassword, setShowPassword] = useState(false);
   const [values, setValues] = useState({
@@ -65,9 +70,10 @@ export default function Login() {
           const token = data.token;
           // Thay đổi isLogin và token trong Store
           dispatch(changeStateIsLogin({ isLogin: true }));
-          dispatch(addToken({ token: token }));
-          // Lưu token vào Cookies
-          Cookies.set('token', token, {});
+          dispatch(({ token: token }));
+          // Lưu token vào Cookies, thay đổi isLogin = true trong Token
+          Cookies.set('token', token, { expires: 4 / 24 });
+          Cookies.set('isLogin', true, { expires: 4 / 24 });
           // Thông báo thành công vào chuyển trang
           toast.success(data.message, { autoClose: 1500 });
           navigate("/home");
@@ -105,8 +111,9 @@ export default function Login() {
           // Thay đổi isLogin và token trong Store
           dispatch(changeStateIsLogin({ isLogin: true }));
           dispatch(addToken({ token: token }));
-          // Lưu token vào Cookies
-          Cookies.set('token', token, {});
+          // Lưu token vào Cookies, thay đổi isLogin = true trong Token
+          Cookies.set('token', token, { expires: 4 / 24 });
+          Cookies.set('isLogin', true, { expires: 4 / 24 });
           // Thông báo thành công vào chuyển trang
           toast.success(data.message, { autoClose: 1500 });
           navigate("/home");

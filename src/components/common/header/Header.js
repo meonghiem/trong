@@ -12,12 +12,17 @@ import Avatar from "@mui/material/Avatar";
 import MenuItem from "@mui/material/MenuItem";
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { changeStateIsLogin, resetToken } from "../../../pages/login/loginSlice";
 
 const pages = ["Home", "List exams", "Create exam"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header(props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -48,6 +53,10 @@ function Header(props) {
 
   const handleClickUserMenu = (setting) => {
     if (setting === "Logout") {
+      dispatch(changeStateIsLogin({ isLogin: false }));
+      dispatch(resetToken())
+      Cookies.remove('token');
+      Cookies.set('isLogin', false);
       navigate('/');
     }
     else {
