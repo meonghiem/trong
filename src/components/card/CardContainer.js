@@ -7,28 +7,26 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-// import IconButton from "@mui/material/IconButton";
-// import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-// import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-// import SkipNextIcon from "@mui/icons-material/SkipNext";
 
 // type CardContainerProps{
 //   img: String
 //   name: String
-//   maHp: String
+//   idExam: String
+//   startDate: String
 //   endDate: String
+//   status : String
 // }
+
 export default function CardContainer(props) {
-  // const theme = useTheme();
-  // const { imgUrl, name, maHp, endDate } = props;
+  // const { imgUrl, name, idExam, startDate, endDate, status } = props;
   return (
-    <div style={{ border: "1px solid gray", borderRadius: "5px" }}>
-      <Card sx={{ display: "flex" }}>
+    <div>
+      <Card sx={{ display: "flex", borderRadius: "16px" }}>
         <CardMedia
           component="img"
-          sx={{ width: 200 }}
+          sx={{ width: 250 }}
           image={props.imgUrl}
-          alt="Live from space album cover"
+          alt="Photo of the exam"
         />
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardContent sx={{ flex: "1 0 auto" }}>
@@ -40,38 +38,32 @@ export default function CardContainer(props) {
               color="text.secondary"
               component="div"
             >
-              {props.maHp}
+              ID : {props.idExam}
             </Typography>
             <Typography
               variant="subtitle1"
               color="text.secondary"
               component="div"
             >
-              Ended - {props.endDate}
+              Start time : {props.startDate}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
+              End time : {props.endDate}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
+              Status : {props.status}
             </Typography>
           </CardContent>
-          {/* <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-          <IconButton aria-label="previous">
-            {theme.direction === "rtl" ? (
-              <SkipNextIcon />
-            ) : (
-              <SkipPreviousIcon />
-            )}
-          </IconButton>
-          <IconButton aria-label="play/pause">
-            <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-          </IconButton>
-          <IconButton aria-label="next">
-            {theme.direction === "rtl" ? (
-              <SkipPreviousIcon />
-            ) : (
-              <SkipNextIcon />
-            )}
-          </IconButton>
-        </Box> */}
           <CardActions>
-            <Button size="small">Share</Button>
-            <Button size="small">Start</Button>
+            <Button size="small" className="icon-button">Start</Button>
           </CardActions>
         </Box>
       </Card>

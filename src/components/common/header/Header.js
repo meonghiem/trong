@@ -130,12 +130,12 @@ function Header(props) {
                   sx={{
                     my: 2,
                     borderRadius: '0px',
-                    color: `${(props.page === page) ? "dodgerblue" : "black"}`,
+                    color: `${(props.page === page) ? "dodgerblue" : "white"}`,
                     display: "block",
                     textTransform: "none",
                     fontSize: "18px",
                     fontSizeAdjust: "none",
-                    borderLeft: `${(props.page === page) ? "3px solid dodgerblue" : "3px solid black"}`,
+                    borderLeft: `${(props.page === page) ? "3px solid dodgerblue" : "3px solid white"}`,
                     paddingLeft: '20px',
                     paddingRight: '20px',
                   }}
