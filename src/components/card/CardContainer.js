@@ -7,6 +7,7 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
 // type CardContainerProps{
 //   img: String
@@ -19,6 +20,20 @@ import Typography from "@mui/material/Typography";
 
 export default function CardContainer(props) {
   // const { imgUrl, name, idExam, startDate, endDate, status } = props;
+
+  const navigate = useNavigate();
+
+  const handleClickView = async () => {
+    try {
+      // const response = await axios.get(`http://localhost:8001/api/exam/${props.idExam}`);
+      // console.log(response);
+      navigate(`/list_exams/exam/${props.idExam}`)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   return (
     <div>
       <Card sx={{ display: "flex", borderRadius: "16px" }}>
@@ -63,7 +78,13 @@ export default function CardContainer(props) {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" className="icon-button">Start</Button>
+            <Button
+              size="small"
+              className="icon-button"
+              onClick={handleClickView}
+            >
+              View
+            </Button>
           </CardActions>
         </Box>
       </Card>

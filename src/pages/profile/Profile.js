@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../components/common/header/Header";
 import { Box, Paper, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import LayoutProfile from "../../components/common/LayoutProfile/LayoutProfile";
+import LayoutProfile from "./LayoutProfile";
 
 
 export default function Profile() {

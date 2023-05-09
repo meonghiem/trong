@@ -8,6 +8,8 @@ import Home from "./pages/home/Home";
 import ListExams from "./pages/list_exams/ListExams";
 import CreateExam from "./pages/create_exam/CreateExam";
 import Profile from "./pages/profile/Profile";
+import Exam from "./components/common/exam/Exam";
+import { useParams } from "react-router-dom";
 
 function App() {
   return (
@@ -20,11 +22,17 @@ function App() {
           <Route path='/list_exams' element={<ListExams />} />
           <Route path='/create_exam' element={<CreateExam />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path="/list_exams/exam/:id" element={<ExamWrapper />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />
     </div>
   );
+}
+
+function ExamWrapper() {
+  const { id } = useParams();
+  return <Exam id={id} />;
 }
 
 export default App;

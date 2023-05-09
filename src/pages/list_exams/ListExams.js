@@ -34,7 +34,6 @@ export default function ListExams() {
         async function fetchData() {
             try {
                 const response = await axios.get("http://localhost:8001/api/exams");
-                console.log(response)
                 const data = response.data;
                 const exams = data.exams;
                 setListExams(exams);
@@ -61,7 +60,6 @@ export default function ListExams() {
                             <Box>
                                 {currentExams.map((exam) => (
                                     <div className="mt-3" key={exam.id}>
-                                        {console.log(exam)}
                                         <CardContainer
                                             imgUrl={`https://img.uxwing.com/wp-content/themes/uxwing/download/education-school/online-exam-icon.svg`}
                                             name={exam.title}
