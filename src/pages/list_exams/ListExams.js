@@ -38,7 +38,7 @@ export default function ListExams() {
                 const exams = data.exams;
                 setListExams(exams);
             } catch (error) {
-                toast.error("An error occurred while connecting to the server", { autoClose: 1500 })
+                toast.error("An error occurred while connecting to the server", { autoClose: 500 })
                 console.log(error);
             }
         }

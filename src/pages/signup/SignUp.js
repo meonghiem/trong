@@ -48,17 +48,17 @@ export default function SignUp() {
         event.preventDefault();
         // Nếu người dùng chưa nhập đủ dữ liệu thì đưa ra thông báo
         if (userName === "" || emailUser === "" || passwordUser === "" || passwordUser === "" || passwordUserConfirm === "" || gender === "" || phone === "") {
-            toast.info("Please enter full data !");
+            toast.info("Please enter full data !", { autoClose: 500 });
             return;
         }
         // Nếu người dùng nhập mật khẩu xác minh sai
         if (passwordUser !== passwordUserConfirm) {
-            toast.info("Confirmation password is incorrect !");
+            toast.info("Confirmation password is incorrect !", { autoClose: 500 });
             return;
         }
         // Nếu người dùng nhập địa chỉ email không hợp lệ
         if (errEmail !== "") {
-            toast.info("Invalid Email", { autoClose: 1500 });
+            toast.info("Invalid Email", { autoClose: 500 });
             return;
         }
         const dataSendToServer = {
@@ -74,7 +74,7 @@ export default function SignUp() {
             const data = response.data;
             // Thông báo thành công
             if (data.code === 0) {
-                toast.success(data.message);
+                toast.success(data.message, { autoClose: 500 });
                 navigate('/');
             }
 
@@ -82,19 +82,19 @@ export default function SignUp() {
             const response = error.response;
             const data = response.data;
             if (data.code === 1) {
-                toast.error(data.message);
+                toast.error(data.message, { autoClose: 500 });
                 return;
             }
             if (data.code === 2) {
-                toast.error(data.message);
+                toast.error(data.message, { autoClose: 500 });
                 return;
             }
             if (data.code === 3) {
-                toast.error(data.message);
+                toast.error(data.message, { autoClose: 500 });
                 return;
             }
             if (data.code === 4) {
-                toast.error(data.message);
+                toast.error(data.message, { autoClose: 500 });
                 return;
             }
         }

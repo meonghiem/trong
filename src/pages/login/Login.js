@@ -49,11 +49,11 @@ export default function Login() {
     event.preventDefault();
     // Kiểm tra xem bỏ trống dữ liệu hay không
     if (values.email === "") {
-      toast.error("You have not entered your email !", { autoClose: 1500 });
+      toast.error("You have not entered your email !", { autoClose: 500 });
       return;
     }
     if (values.password === "") {
-      toast.error("You have not entered your password !", { autoClose: 1500 });
+      toast.error("You have not entered your password !", { autoClose: 500 });
       return;
     }
     // Nếu sử dụng email để đăng nhập.
@@ -77,22 +77,22 @@ export default function Login() {
           Cookies.set('isLogin', true);
           Cookies.set('id', data.user.id);
           // Thông báo thành công vào chuyển trang
-          toast.success(data.message, { autoClose: 1500 });
+          toast.success(data.message, { autoClose: 500 });
           navigate("/home");
         }
       } catch (error) {
         const response = error.response;
         const data = response.data;
         if (data.code === 1) {
-          toast.error(data.message, { autoClose: 1500 });
+          toast.error(data.message, { autoClose: 500 });
           return;
         }
         if (data.code === 2) {
-          toast.error(data.message, { autoClose: 1500 });
+          toast.error(data.message, { autoClose: 500 });
           return;
         }
         if (data.code === 3) {
-          toast.error(data.message, { autoClose: 1500 });
+          toast.error(data.message, { autoClose: 500 });
           return;
         }
       }
@@ -118,22 +118,22 @@ export default function Login() {
           Cookies.set('isLogin', true);
           Cookies.set('id', data.user.id);
           // Thông báo thành công vào chuyển trang
-          toast.success(data.message, { autoClose: 1500 });
+          toast.success(data.message, { autoClose: 500 });
           navigate("/home");
         }
       } catch (error) {
         const response = error.response;
         const data = response.data;
         if (data.code === 1) {
-          toast.error(data.message, { autoClose: 1500 });
+          toast.error(data.message, { autoClose: 500 });
           return;
         }
         if (data.code === 2) {
-          toast.error(data.message, { autoClose: 1500 });
+          toast.error(data.message, { autoClose: 500 });
           return;
         }
         if (data.code === 3) {
-          toast.error(data.message, { autoClose: 1500 });
+          toast.error(data.message, { autoClose: 500 });
           return;
         }
       }

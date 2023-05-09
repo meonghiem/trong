@@ -44,7 +44,7 @@ export default function LayoutProfile() {
                 setRank(data.user.rank);
                 setCreatedAt(data.user.createdAt);
             } catch (error) {
-                toast.error("An error occurred while connecting to the server", { autoClose: 1500 })
+                toast.error("An error occurred while connecting to the server", { autoClose: 500 })
                 // console.log(error);
             }
         }

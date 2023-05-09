@@ -20,6 +20,7 @@ const pages = ["Home", "List exams", "Create exam"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header(props) {
+  // props.page
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
