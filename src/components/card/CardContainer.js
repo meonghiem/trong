@@ -42,13 +42,24 @@ export default function CardContainer(props) {
             >
               {props.maHp}
             </Typography>
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="div"
-            >
-              Ended - {props.endDate}
-            </Typography>
+            {props.endDate && (
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                component="div"
+              >
+                Ended - {props.endDate}
+              </Typography>
+            )}
+            {props.Time && (
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                component="div"
+              >
+                Time - {props.Time}
+              </Typography>
+            )}
             {props.point && (
               // <Typography
               //   variant="subtitle2"
