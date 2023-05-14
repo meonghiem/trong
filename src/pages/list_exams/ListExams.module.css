@@ -1,0 +1,16 @@
+.homeContainer {
+    margin: 40px 15%;
+}
+
+.content {
+    margin: 40px 0px;
+}
+
+#myInput::placeholder {
+    font-size: 80%;
+}
+
+#buttonSearch {
+    background-color: #1976d2;
+    color: white;
+}

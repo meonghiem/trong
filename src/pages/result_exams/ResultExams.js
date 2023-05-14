@@ -81,11 +81,8 @@ export default function ResultExams() {
   };
   return (
     <>
-      <div style={{ paddingTop: "90px" }}>
-        <Header page="Result Exams" />
-      </div>
-      <div className={`${styles.homeContainer}`} style={{ paddingTop: "30px" }}>
-        <div className={`${styles.content}`}>
+      <div className={``}>
+        <div className={``}>
           <div className="row">
             <div className="col-7">
               <div
