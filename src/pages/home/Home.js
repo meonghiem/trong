@@ -10,50 +10,62 @@ export default function Home() {
       {
         id: 1,
         imgUrl:
-          "https://soict.daotao.ai/asset-v1:SoICT+IT4272+2022-1+type@asset+block@Capture.JPG",
-        name: "Hệ thống máy tính - Thi cuối kỳ 2022-1",
-        maHp: "IT4272",
+          "https://img.uxwing.com/wp-content/themes/uxwing/download/education-school/online-exam-icon.svg",
+        name: "Exam 1",
+        idExam: "IT4272",
+        startDate: "01/02/2023",
         endDate: "01/03/2023",
+        status: "public",
       },
       {
         id: 2,
         imgUrl:
-          "https://soict.daotao.ai/asset-v1:SoICT+IT4272+2022-1+type@asset+block@Capture.JPG",
+          "https://img.uxwing.com/wp-content/themes/uxwing/download/education-school/online-exam-icon.svg",
         name: "abc",
-        maHp: "IT4272",
+        idExam: "IT4272",
+        startDate: "01/02/2023",
         endDate: "01/03/2023",
+        status: "public",
       },
       {
         id: 3,
         imgUrl:
-          "https://soict.daotao.ai/asset-v1:SoICT+IT4272+2022-1+type@asset+block@Capture.JPG",
-        name: "Hệ thống máy tính - Thi cuối kỳ 2022-1",
-        maHp: "IT4272",
+          "https://img.uxwing.com/wp-content/themes/uxwing/download/education-school/online-exam-icon.svg",
+        name: "Exam 3",
+        idExam: "IT4272",
+        startDate: "01/02/2023",
         endDate: "01/03/2023",
+        status: "public",
       },
       {
         id: 4,
         imgUrl:
-          "https://soict.daotao.ai/asset-v1:SoICT+IT4272+2022-1+type@asset+block@Capture.JPG",
-        name: "Hệ thống máy tính - Thi cuối kỳ 2022-1",
-        maHp: "IT4272",
+          "https://img.uxwing.com/wp-content/themes/uxwing/download/education-school/online-exam-icon.svg",
+        name: "Exam 4",
+        idExam: "IT4272",
+        startDate: "01/02/2023",
         endDate: "01/03/2023",
+        status: "public",
       },
       {
         id: 5,
         imgUrl:
-          "https://soict.daotao.ai/asset-v1:SoICT+IT4272+2022-1+type@asset+block@Capture.JPG",
-        name: "Hệ thống máy tính - Thi cuối kỳ 2022-1",
-        maHp: "IT4272",
+          "https://img.uxwing.com/wp-content/themes/uxwing/download/education-school/online-exam-icon.svg",
+        name: "Exam 5",
+        idExam: "IT4272",
+        startDate: "01/02/2023",
         endDate: "01/03/2023",
+        status: "public",
       },
       {
         id: 6,
         imgUrl:
-          "https://soict.daotao.ai/asset-v1:SoICT+IT4272+2022-1+type@asset+block@Capture.JPG",
-        name: "Hệ thống máy tính - Thi cuối kỳ 2022-1",
-        maHp: "IT4272",
+          "https://img.uxwing.com/wp-content/themes/uxwing/download/education-school/online-exam-icon.svg",
+        name: "Exam 6",
+        idExam: "IT4272",
+        startDate: "01/02/2023",
         endDate: "01/03/2023",
+        status: "public",
       },
     ];
   }, []);
@@ -80,6 +92,7 @@ export default function Home() {
       <div className={`${styles.homeContainer}`} style={{ paddingTop: "30px" }}>
         <div className={`${styles.content}`}>
           <div className="row">
+            {/* Hiển thị danh sách các bài thi đã tham gia */}
             <div className="col-7">
               <div
                 className="header font-weight-bold font h2"
@@ -87,21 +100,23 @@ export default function Home() {
               >
                 List of participated exams
               </div>
-              {/* Hiển thị danh sách các bài thi */}
               {cardList.map((card, id) => {
                 return (
                   <div className="mt-3" key={id}>
                     <CardContainer
                       imgUrl={card.imgUrl}
                       name={card.name}
-                      maHp={card.maHp}
+                      idExam={card.idExam}
+                      startDate={card.startDate}
                       endDate={card.endDate}
+                      status={card.status}
                       key={card.name + id}
                     />
                   </div>
                 );
               })}
             </div>
+            {/* Tìm kiếm khóa học */}
             <div className="col-5">
               <div
                 className="header font-weight-bold font h2"

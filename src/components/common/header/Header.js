@@ -12,12 +12,21 @@ import Avatar from "@mui/material/Avatar";
 import MenuItem from "@mui/material/MenuItem";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import {
+  changeStateIsLogin,
+  resetToken,
+} from "../../../pages/login/loginSlice";
 
-const pages = ["Home", "List exams", "Create exam", "Result Exams"];
+const pages = ["Home", "List exams", "Create exam"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header(props) {
+  // props.page
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -48,6 +57,12 @@ function Header(props) {
 
   const handleClickUserMenu = (setting) => {
     if (setting === "Logout") {
+      dispatch(changeStateIsLogin({ isLogin: false }));
+      dispatch(resetToken());
+      // Xử lý lưu trữ trong Cookies
+      Cookies.remove("token");
+      Cookies.remove("id");
+      Cookies.set("isLogin", false);
       navigate("/");
     } else {
       const url = `/${setting.toLowerCase().replace(" ", "_")}`;
@@ -115,7 +130,17 @@ function Header(props) {
             </Menu>
           </Box>
           {/* Tạo các Button có nhãn gồm các page khi người dùng để màn hình trạng thái lớn*/}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: {
+                xs: "none",
+                md: "flex",
+                paddingLeft: "20px",
+                marginLeft: "20px",
+              },
+            }}
+          >
             {pages.map((page, index) => {
               return (
                 <Button
@@ -131,8 +156,12 @@ function Header(props) {
                     fontSize: "18px",
                     fontSizeAdjust: "none",
                     borderLeft: `${
-                      props.page === page ? "3px solid dodgerblue" : "0px"
+                      props.page === page
+                        ? "3px solid dodgerblue"
+                        : "3px solid white"
                     }`,
+                    paddingLeft: "20px",
+                    paddingRight: "20px",
                   }}
                 >
                   {page}
