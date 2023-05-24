@@ -42,7 +42,7 @@ export default function SignUp() {
         if (regex.test(userName) === false) {
             setErrUserName("Username cannot contain spaces or special characters");
         }
-        // Username không được ngắn hơn 3 ký tự và dài hơn 12 ký tự
+        // Username không được ngắn hơn 4 ký tự và dài hơn 12 ký tự
         else if (userName.length < 4 || userName.length > 12) {
             setErrUserName("The username must have a length of 4 to 12 characters");
         }

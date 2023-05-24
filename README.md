@@ -19,7 +19,7 @@ Khi isLogin = false, mọi địa chỉ đều bị điều hướng đến / (t
 <h1>Đăng nhập bằng username hoặc email</h1>
 Kiểm tra nội dung người dùng nhập, xác nhận người dùng đang sử dụng email hay username, sau đó gửi API tương ứng
 <h1>Đăng ký</h1>
-Tiền xử lý các thao tác như yêu cầu nhập đầy đủ dữ liệu, định dạng email hợp lệ, kiểm tra password và confirm password
+Tiền xử lý các thao tác như yêu cầu nhập đầy đủ dữ liệu, định dạng email, userName hợp lệ, kiểm tra password và confirm password
 
 
 
