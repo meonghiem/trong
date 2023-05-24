@@ -48,20 +48,24 @@ export default function CardContainer(props) {
             <Typography component="div" variant="h5">
               {props.name}
             </Typography>
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="div"
-            >
-              ID : {props.idExam}
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="div"
-            >
-              Start time : {props.startDate}
-            </Typography>
+            {props.idExam && (
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                component="div"
+              >
+                ID : {props.idExam}
+              </Typography>
+            )}
+            {props.startDate && (
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                component="div"
+              >
+                Start time : {props.startDate}
+              </Typography>
+            )}
             {props.endDate && (
               <Typography
                 variant="subtitle1"
@@ -81,19 +85,19 @@ export default function CardContainer(props) {
               </Typography>
             )}
             {props.point && (
-              // <Typography
-              //   variant="subtitle2"
-              //   color="success.main"
-              //   component="div"
-              // >
-              //   {props.point} / 10
-              // </Typography>
-              <div>
-                Point -{" "}
-                <div style={{ color: "red", display: "inline-block" }}>
-                  {props.point}/10
-                </div>
-              </div>
+              <Typography
+                variant="subtitle1"
+                color="success.main"
+                component="div"
+              >
+                Point - {props.point} / 10
+              </Typography>
+              // <div>
+              //   Point -{" "}
+              //   <div style={{ color: "red", display: "inline-block" }}>
+              //     {props.point}/10
+              //   </div>
+              // </div>
             )}
             {props.status && (
               <Typography
@@ -109,12 +113,12 @@ export default function CardContainer(props) {
             {!props.point ? (
               <>
                 <Button
-              size="small"
-              className="icon-button"
-              onClick={handleClickView}
-            >
-              View
-            </Button>
+                  size="small"
+                  className="icon-button"
+                  onClick={handleClickView}
+                >
+                  View
+                </Button>
               </>
             ) : (
               <>
@@ -123,7 +127,7 @@ export default function CardContainer(props) {
                 </Button>
               </>
             )}
-            
+
           </CardActions>
         </Box>
       </Card>
