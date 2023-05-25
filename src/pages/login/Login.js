@@ -178,6 +178,11 @@ export default function Login() {
                     // Thêm onChange
                     onChange={(e) => setValues({ ...values, email: e.target.value })}
                     title="Enter your email or username"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleClickSignIn(e);
+                      }
+                    }}
                   />
                 </Grid>
                 {/* Enter password user */}
@@ -214,6 +219,11 @@ export default function Login() {
                     // Thêm onChange
                     onChange={(e) => setValues({ ...values, password: e.target.value })}
                     title="Enter your password"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleClickSignIn(e);
+                      }
+                    }}
                   />
                 </Grid>
                 {/* Submit và signup*/}

@@ -4,28 +4,29 @@ import React, { useState } from "react";
 export default function Question(props) {
     const id = props.id;
     const quizType = props.quizType;
+    const quizQuestion = props.quizQuestion;
     const answerList = props.answerList;
     const arrAnswerList = JSON.parse(answerList);
-    const keyList = props.keyList;
-    const arrKeyList = JSON.parse(keyList);
-    const index = props.index;
+    // const keyList = props.keyList;
+    // const arrKeyList = JSON.parse(keyList);
+    // const index = props.index;
     const [save, setSave] = useState(false);
 
-    // Khởi tạo state để lưu trữ trạng thái của các checkbox
+    // Khởi tạo state để lưu trữ trạng thái của các checkbox, ví dụ như [false, false, false]
     const [checkedList, setCheckedList] = useState(
         Array(arrAnswerList.length).fill(false)
     );
 
-    // Khởi tạo state để lưu trữ giá trị đáp án được chọn trong RadioGroup
+    // Khởi tạo state để lưu trữ giá trị đáp án được chọn trong RadioGroup, ví dụ như "A"
     const [selectedAnswer, setSelectedAnswer] = useState('');
 
     // Biến isCorrectCheckBox sẽ kiểm tra số lượng giá trị True với số lượng key
     // Trong biểu thức thứ 2, sẽ trả về false nếu tồn tại 1 đáp án không được chọn, mà đáp án này lại thuộc vào danh sách đáp án chính xác
-    const isCorrectCheckBox = arrKeyList.length === checkedList.filter(checked => checked).length
-        && checkedList.every((checked, index) => checked || !arrKeyList.includes(arrAnswerList[index]));
+    // const isCorrectCheckBox = arrKeyList.length === checkedList.filter(checked => checked).length
+    //     && checkedList.every((checked, index) => checked || !arrKeyList.includes(arrAnswerList[index]));
 
     // Biến isCorrectRadio kiểm tra xem đáp án được chọn chính xác hay không
-    const isCorrectRadio = arrKeyList.includes(selectedAnswer);
+    // const isCorrectRadio = arrKeyList.includes(selectedAnswer);
 
     // useEffect(() => {
     //     if (quizType === "multiple_choice") {
@@ -60,19 +61,35 @@ export default function Question(props) {
     const handleSave = () => {
         setSave(!save);
         if (quizType === "multiple_choice") {
-            props.onChangeAnswer(index, isCorrectCheckBox);
+            // props.onChangeAnswer(index, isCorrectCheckBox);
+            let arrKeySelected = [];
+            for (let i = 0; i < arrAnswerList.length; i++) {
+                if (checkedList[i] === true) {
+                    arrKeySelected.push(arrAnswerList[i]);
+                }
+            }
+            // console.log(`ID: ${id} + Key selected: ${arrKeySelected}`);
+            props.onChangeListAnswer(id, arrKeySelected);
         }
         else {
-            props.onChangeAnswer(index, isCorrectRadio);
+            // props.onChangeAnswer(index, isCorrectRadio);
+            let arrKeySelected = [];
+            arrKeySelected.push(selectedAnswer);
+            // console.log(`ID: ${id} + Key selected: ${arrKeySelected}`);
+            props.onChangeListAnswer(id, arrKeySelected);
         }
     }
 
     return (
         <div>
             <Grid container sx={{ marginTop: '20px' }}>
-                {/* Đề bài */}
+                {/* ID */}
                 <Grid item xs={12} sx={{ paddingLeft: '20px' }}>
                     <strong>ID: {id}</strong>
+                </Grid>
+                {/* Đề bài */}
+                <Grid item xs={12} sx={{ paddingLeft: '20px' }}>
+                    <strong>{quizQuestion}</strong>
                 </Grid>
                 {/* Hiển thị danh sách đáp án */}
                 <Grid container sx={{ paddingTop: '10px' }}>
