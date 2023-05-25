@@ -1,5 +1,5 @@
 import { Container } from "@mui/system";
-import { Grid, Paper, Box, TextField, InputAdornment, RadioGroup, Radio, FormControlLabel, FormLabel, Button } from "@mui/material";
+import { Grid, Paper, Box, TextField, InputAdornment, RadioGroup, Radio, FormControlLabel, FormLabel, Button, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -10,9 +10,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
 
-
 export default function SignUp() {
     const [userName, setUserName] = useState("");
+    const [errUserName, setErrUserName] = useState("");
     const [emailUser, setEmailUser] = useState("");
     const [errEmail, setErrEmail] = useState("");
     const [passwordUser, setPasswordUser] = useState("");
@@ -21,6 +21,7 @@ export default function SignUp() {
     const [gender, setGender] = useState("");
     const [phone, setPhone] = useState("");
     const navigate = useNavigate()
+    const [openDialog, setOpenDialog] = useState(false);
 
     useEffect(() => {
         setPasswordUserConfirm("")
@@ -36,6 +37,21 @@ export default function SignUp() {
     }, [emailUser]);
 
     useEffect(() => {
+        const regex = /^[a-zA-Z0-9]+$/;
+        // Username không chứa ký tự đặc biệt
+        if (regex.test(userName) === false) {
+            setErrUserName("Username cannot contain spaces or special characters");
+        }
+        // Username không được ngắn hơn 4 ký tự và dài hơn 12 ký tự
+        else if (userName.length < 4 || userName.length > 12) {
+            setErrUserName("The username must have a length of 4 to 12 characters");
+        }
+        else {
+            setErrUserName("");
+        }
+    }, [userName]);
+
+    useEffect(() => {
         if ((passwordUser !== passwordUserConfirm) && passwordUserConfirm !== "") {
             setErrPasswordUserConfirm("Confirmation password is incorrect");
         }
@@ -44,11 +60,64 @@ export default function SignUp() {
         }
     }, [passwordUserConfirm, passwordUser]);
 
-    const handleClickSignUp = async (event) => {
+    const handleOpenDialog = () => {
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = async (choice) => {
+        setOpenDialog(false);
+        if (choice === "Yes") {
+            const dataSendToServer = {
+                email: emailUser,
+                user_password: passwordUser,
+                confirm_password: passwordUserConfirm,
+                user_name: userName,
+                gender: gender,
+                phone: phone,
+            };
+            try {
+                const response = await axios.post("http://localhost:8001/api/signup", dataSendToServer);
+                const data = response.data;
+                // Thông báo thành công
+                if (data.code === 0) {
+                    toast.success(data.message, { autoClose: 500 });
+                    navigate('/');
+                }
+
+            } catch (error) {
+                const response = error.response;
+                const data = response.data;
+                if (data.code === 1) {
+                    toast.error(data.message, { autoClose: 500 });
+                    return;
+                }
+                if (data.code === 2) {
+                    toast.error(data.message, { autoClose: 500 });
+                    return;
+                }
+                if (data.code === 3) {
+                    toast.error(data.message, { autoClose: 500 });
+                    return;
+                }
+                if (data.code === 4) {
+                    toast.error(data.message, { autoClose: 500 });
+                    return;
+                }
+            }
+        }
+    };
+
+
+    const handleClickSignUp = (event) => {
         event.preventDefault();
         // Nếu người dùng chưa nhập đủ dữ liệu thì đưa ra thông báo
         if (userName === "" || emailUser === "" || passwordUser === "" || passwordUser === "" || passwordUserConfirm === "" || gender === "" || phone === "") {
             toast.info("Please enter full data !", { autoClose: 500 });
+            return;
+        }
+        // Nếu người dùng nhập userName không hợp lệ
+        if (errUserName !== "") {
+            toast.info("Invalid user name!", { autoClose: 500 });
             return;
         }
         // Nếu người dùng nhập mật khẩu xác minh sai
@@ -61,43 +130,8 @@ export default function SignUp() {
             toast.info("Invalid Email", { autoClose: 500 });
             return;
         }
-        const dataSendToServer = {
-            email: emailUser,
-            user_password: passwordUser,
-            confirm_password: passwordUserConfirm,
-            user_name: userName,
-            gender: gender,
-            phone: phone,
-        };
-        try {
-            const response = await axios.post("http://localhost:8001/api/signup", dataSendToServer);
-            const data = response.data;
-            // Thông báo thành công
-            if (data.code === 0) {
-                toast.success(data.message, { autoClose: 500 });
-                navigate('/');
-            }
-
-        } catch (error) {
-            const response = error.response;
-            const data = response.data;
-            if (data.code === 1) {
-                toast.error(data.message, { autoClose: 500 });
-                return;
-            }
-            if (data.code === 2) {
-                toast.error(data.message, { autoClose: 500 });
-                return;
-            }
-            if (data.code === 3) {
-                toast.error(data.message, { autoClose: 500 });
-                return;
-            }
-            if (data.code === 4) {
-                toast.error(data.message, { autoClose: 500 });
-                return;
-            }
-        }
+        // Hiển thị Dialog xác nhận
+        handleOpenDialog();
     }
 
     return (
@@ -134,6 +168,7 @@ export default function SignUp() {
                                         variant="outlined"
                                         placeholder="Please enter your name"
                                         onChange={(e) => setUserName(e.target.value)}
+                                        helperText={userName === "" ? "" : errUserName}
                                     />
                                 </Grid>
                                 {/* Email user */}
@@ -248,6 +283,18 @@ export default function SignUp() {
                         </form>
                     </Paper>
                 </Grid>
+                <Dialog open={openDialog} onClose={() => handleCloseDialog("")} disableEscapeKeyDown={true}>
+                    <DialogTitle>Confirm</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Confirm account registration
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => handleCloseDialog("Yes")}>Yes</Button>
+                        <Button onClick={() => handleCloseDialog("No")}>No</Button>
+                    </DialogActions>
+                </Dialog>
             </Container>
         </div>
     )
