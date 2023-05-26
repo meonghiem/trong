@@ -12,6 +12,7 @@ import Profile from "./pages/profile/Profile";
 import Exam from "./components/common/exam/Exam";
 import ExamContent from "./components/common/exam/ExamContent";
 import Cookies from "js-cookie";
+import NewExam from "./pages/new_exam/NewExam";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="list_exams" element={<ListExams />} />
           <Route path="create_exam" element={<CreateExam />} />
+          <Route path="create_exam/new" element={<NewExam />} />
           {/* <Route path="result_exams" element={<ResultExams />} /> */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/list_exams/exam/:id" element={<ExamWrapper />} />
