@@ -2,6 +2,8 @@ import * as React from "react";
 import CardContainer from "../../components/card/CardContainer";
 import styles from "./Home.module.css";
 import Header from "../../components/common/header/Header";
+import Cookies from "js-cookie";
+import { Navigate } from "react-router-dom";
 
 export default function Home() {
   //Memo
@@ -84,62 +86,69 @@ export default function Home() {
     setCardList(cards.filter((e) => e.name.includes(text)));
   };
 
-  return (
-    <>
-      <div>
-        <Header page="Home" />
-      </div>
-      <div className={`${styles.homeContainer}`} style={{ paddingTop: '30px' }}>
-        <div className={`${styles.content}`}>
-          <div className="row">
-            {/* Hiển thị danh sách các bài thi đã tham gia */}
-            <div className="col-7">
-              <div className="header font-weight-bold font h2" style={{ color: "white" }}>List of participated exams</div>
-              {cardList.map((card, id) => {
-                return (
-                  <div className="mt-3" key={id}>
-                    <CardContainer
-                      imgUrl={card.imgUrl}
-                      name={card.name}
-                      idExam={card.idExam}
-                      startDate={card.startDate}
-                      endDate={card.endDate}
-                      status={card.status}
-                      key={card.name + id}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-            {/* Tìm kiếm khóa học */}
-            <div className="col-5">
-              <div className="header font-weight-bold font h2" style={{ color: "white" }}>Search for exams</div>
-              <div className="form-inline" style={{ paddingTop: '10px' }}>
-                <input
-                  className="form-control mr-sm-2 w-75 mr-4"
-                  type="search"
-                  placeholder="Enter information of the course to search"
-                  aria-label="Search"
-                  onChange={(e) => {
-                    setSearchText(e.target.value);
-                  }}
-                  id={`${styles.myInput}`}
-                  title="Enter information of the course to search"
-                />
-                <button
-                  className="btn btn-outline-primary my-2 my-sm-0"
-                  onClick={() => handleSearch(searchText)}
-                  id={`${styles.buttonSearch}`}
-                  title="Click to search"
-                >
-                  Search
-                </button>
+  const isLogin = (Cookies.get('isLogin') === 'true');
+
+  if (!isLogin) {
+    return <Navigate replace to="/" />
+  }
+  else {
+    return (
+      <>
+        <div>
+          <Header page="Home" />
+        </div>
+        <div className={`${styles.homeContainer}`} style={{ paddingTop: '30px' }}>
+          <div className={`${styles.content}`}>
+            <div className="row">
+              {/* Hiển thị danh sách các bài thi đã tham gia */}
+              <div className="col-7">
+                <div className="header font-weight-bold font h2" style={{ color: "white" }}>List of participated exams</div>
+                {cardList.map((card, id) => {
+                  return (
+                    <div className="mt-3" key={id}>
+                      <CardContainer
+                        imgUrl={card.imgUrl}
+                        name={card.name}
+                        idExam={card.idExam}
+                        startDate={card.startDate}
+                        endDate={card.endDate}
+                        status={card.status}
+                        key={card.name + id}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+              {/* Tìm kiếm khóa học */}
+              <div className="col-5">
+                <div className="header font-weight-bold font h2" style={{ color: "white" }}>Search for exams</div>
+                <div className="form-inline" style={{ paddingTop: '10px' }}>
+                  <input
+                    className="form-control mr-sm-2 w-75 mr-4"
+                    type="search"
+                    placeholder="Enter information of the course to search"
+                    aria-label="Search"
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                    }}
+                    id={`${styles.myInput}`}
+                    title="Enter information of the course to search"
+                  />
+                  <button
+                    className="btn btn-outline-primary my-2 my-sm-0"
+                    onClick={() => handleSearch(searchText)}
+                    id={`${styles.buttonSearch}`}
+                    title="Click to search"
+                  >
+                    Search
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
-
-  );
+      </>
+  
+    );
+  }
 }
