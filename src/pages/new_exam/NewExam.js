@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Header from "../../components/common/header/Header";
-import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper, TextField, Typography, Select, MenuItem } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -18,6 +18,9 @@ export default function NewExam() {
     const [endTime, setEndTime] = useState(null);
     const [startTimeConvert, setStartTimeConvert] = useState("");
     const [endTimeConvert, setEndTimeCovert] = useState("");
+    const [isOpen, setIsOpen] = useState("false");
+    const [state, setState] = useState("public");
+    const [passwordExam, setPasswordExam] = useState("");
 
     useEffect(() => {
         setStartTimeConvert(startTime && dayjs(startTime).format('YYYY/MM/DD HH:mm:ss'));
@@ -28,6 +31,14 @@ export default function NewExam() {
         console.log(startTimeConvert);
         console.log(endTimeConvert);
     },)
+
+    const handleChangeOpen = (event) => {
+        setIsOpen(event.target.value);
+    };
+
+    const handleChangeState = (event) => {
+        setState(event.target.value);
+    };
 
     if (!isLogin) {
         return <Navigate replace to="/" />
@@ -56,7 +67,7 @@ export default function NewExam() {
                                     variant="outlined"
                                     placeholder="Please enter title exam"
                                     onChange={(e) => setTitleExam(e.target.value)}
-                                    helperText={titleExam === "" ? "The exam title is not filled in" : ""}
+                                    helperText={titleExam === "" ? <span style={{ color: "red" }}>The exam title is not filled in</span> : ""}
                                 />
                                 {/* Start time */}
                                 <Typography
@@ -95,6 +106,60 @@ export default function NewExam() {
                                         </DemoContainer>
                                     </LocalizationProvider>
                                 </Box>
+                                {/* Chỉnh trạng thái Open */}
+                                <Grid container alignItems="center" sx={{ paddingLeft: "10px", paddingBottom: "10px" }}>
+                                    <Grid item xs={0.5}>
+                                        <Typography variant="subtitle1" color="text.secondary">
+                                            Open
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={11.5}>
+                                        <Select
+                                            value={isOpen}
+                                            onChange={handleChangeOpen}
+                                        >
+                                            <MenuItem value="true">True</MenuItem>
+                                            <MenuItem value="false">False</MenuItem>
+                                        </Select>
+                                    </Grid>
+                                </Grid>
+                                {/* Chỉnh trạng thái State */}
+                                <Grid container alignItems="center" sx={{ paddingLeft: "10px", paddingBottom: "10px" }}>
+                                    <Grid item xs={0.5}>
+                                        <Typography variant="subtitle1" color="text.secondary">
+                                            State
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={11.5}>
+                                        <Select
+                                            value={state}
+                                            onChange={handleChangeState}
+                                        >
+                                            <MenuItem value="public">Public</MenuItem>
+                                            <MenuItem value="private">Private</MenuItem>
+                                        </Select>
+                                    </Grid>
+                                </Grid>
+                                {/* Password Exam */}
+                                <Grid container alignItems="center" sx={{ paddingLeft: "10px", paddingBottom: "10px" }}>
+                                    <Grid item xs={1}>
+                                        <Typography variant="subtitle1" color="text.secondary">
+                                            Password
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={11}>
+                                        <TextField
+                                            required
+                                            type="text"
+                                            id="password"
+                                            value={titleExam}
+                                            variant="outlined"
+                                            placeholder="Please enter password"
+                                            onChange={(e) => setPasswordExam(e.target.value)}
+                                            helperText={passwordExam === "" ? <span style={{color:"red"}}>The exam password is not filled in</span> : ""}
+                                        />
+                                    </Grid>
+                                </Grid>
                             </Paper>
                         </Grid>
                         <Grid item xs={10} sx={{ paddingTop: '10px' }}>

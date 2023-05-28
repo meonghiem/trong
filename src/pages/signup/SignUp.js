@@ -23,6 +23,7 @@ export default function SignUp() {
     const [phone, setPhone] = useState("");
     const navigate = useNavigate()
     const [openDialog, setOpenDialog] = useState(false);
+    const errorColor = errPasswordUserConfirm === "Confirmation password is incorrect" ? "red" : "green";
 
     useEffect(() => {
         setPasswordUserConfirm("")
@@ -176,7 +177,7 @@ export default function SignUp() {
                                             variant="outlined"
                                             placeholder="Please enter your name"
                                             onChange={(e) => setUserName(e.target.value)}
-                                            helperText={userName === "" ? "" : errUserName}
+                                            helperText={userName === "" ? "" : <span style={{ color: "red" }}>{errUserName}</span>}
                                         />
                                     </Grid>
                                     {/* Email user */}
@@ -198,7 +199,7 @@ export default function SignUp() {
                                             variant="outlined"
                                             placeholder="Please enter your email"
                                             onChange={(e) => setEmailUser(e.target.value)}
-                                            helperText={emailUser === "" ? "" : errEmail}
+                                            helperText={emailUser === "" ? "" : <span style={{ color: "red" }}>{errEmail}</span>}
                                         />
                                     </Grid>
                                     {/* Password user */}
@@ -243,7 +244,7 @@ export default function SignUp() {
                                             onChange={(e) => setPasswordUserConfirm(e.target.value)}
                                             //Cần nhập passwordUser trước
                                             disabled={passwordUser === ""}
-                                            helperText={passwordUserConfirm === "" ? "" : errPasswordUserConfirm}
+                                            helperText={passwordUserConfirm === "" ? "" : <span style={{ color: errorColor }}>{errPasswordUserConfirm}</span>}
                                         />
                                     </Grid>
                                     {/* Selection gender */}
