@@ -9,10 +9,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MultiInputDateTimeRangeField } from '@mui/x-date-pickers-pro/MultiInputDateTimeRangeField';
 import dayjs from 'dayjs';
+import axios from "axios";
+import { toast } from "react-toastify";
 
 
 export default function NewExam() {
     const isLogin = (Cookies.get('isLogin') === 'true');
+    const id = Cookies.get('id');
     const [titleExam, setTitleExam] = useState("");
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
@@ -27,10 +30,66 @@ export default function NewExam() {
         setEndTimeCovert(endTime && dayjs(endTime).format('YYYY/MM/DD HH:mm:ss'));
     }, [startTime, endTime])
 
-    useEffect(() => {
-        console.log(startTimeConvert);
-        console.log(endTimeConvert);
-    },)
+    function compareTime(startTime, endTime) {
+        const startDate = new Date(startTime);
+        const endDate = new Date(endTime);
+
+        return startDate.getTime() < endDate.getTime();
+    }
+
+    const handleClickCreateExam = async () => {
+        if (titleExam === "") {
+            toast.info("The exam title is not filled in !", { autoClose: 1000 });
+            return;
+        }
+        if (startTimeConvert === "" || startTimeConvert === "Invalid Date" || startTimeConvert === null
+            || endTimeConvert === "" || endTimeConvert === "Invalid Date" || endTimeConvert === null) {
+            toast.info("You have not entered the time of the test !", { autoClose: 1000 });
+            return;
+        }
+        if (!compareTime(startTimeConvert, endTimeConvert)) {
+            toast.info("End time must be the time after Start time !", { autoClose: 1000 });
+            return;
+        }
+        let dataSendToServer = {};
+        if (state === 'private') {
+            dataSendToServer = {
+                title: titleExam,
+                start_time: startTimeConvert,
+                end_time: endTimeConvert,
+                is_open: isOpen,
+                state: state,
+                passwword: passwordExam,
+                author: parseInt(id),
+            }
+        }
+        else {
+            dataSendToServer = {
+                title: titleExam,
+                start_time: startTimeConvert,
+                end_time: endTimeConvert,
+                is_open: isOpen,
+                state: state,
+                author: parseInt(id),
+            }
+        }
+        console.log(dataSendToServer);
+        try {
+            const response = await axios.post("http://localhost:8001/api/exam", dataSendToServer);
+            toast.success(response.data.message, { autoClose: 1000 });
+            setTitleExam("");
+            setStartTimeConvert("");
+            setEndTimeCovert("");
+            setStartTime(null);
+            setEndTime(null);
+            setIsOpen("false");
+            setState("public");
+            setPasswordExam("");
+
+        } catch (error) {
+            toast.error("An error occurred while connecting to the server", { autoClose: 1000 });
+        }
+    }
 
     const handleChangeOpen = (event) => {
         setIsOpen(event.target.value);
@@ -141,25 +200,29 @@ export default function NewExam() {
                                     </Grid>
                                 </Grid>
                                 {/* Password Exam */}
-                                <Grid container alignItems="center" sx={{ paddingLeft: "10px", paddingBottom: "10px" }}>
-                                    <Grid item xs={1}>
-                                        <Typography variant="subtitle1" color="text.secondary">
-                                            Password
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={11}>
-                                        <TextField
-                                            required
-                                            type="text"
-                                            id="password"
-                                            value={titleExam}
-                                            variant="outlined"
-                                            placeholder="Please enter password"
-                                            onChange={(e) => setPasswordExam(e.target.value)}
-                                            helperText={passwordExam === "" ? <span style={{color:"red"}}>The exam password is not filled in</span> : ""}
-                                        />
-                                    </Grid>
-                                </Grid>
+                                {(state === "private") &&
+                                    (
+                                        <Grid container alignItems="center" sx={{ paddingLeft: "10px", paddingBottom: "10px" }}>
+                                            <Grid item xs={1}>
+                                                <Typography variant="subtitle1" color="text.secondary">
+                                                    Password
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={11}>
+                                                <TextField
+                                                    required
+                                                    type="text"
+                                                    id="password"
+                                                    value={passwordExam}
+                                                    variant="outlined"
+                                                    placeholder="Please enter password"
+                                                    onChange={(e) => setPasswordExam(e.target.value)}
+                                                    helperText={passwordExam === "" ? <span style={{ color: "red" }}>The exam password is not filled in</span> : ""}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    )
+                                }
                             </Paper>
                         </Grid>
                         <Grid item xs={10} sx={{ paddingTop: '10px' }}>
@@ -167,8 +230,9 @@ export default function NewExam() {
                                 variant="contained"
                                 startIcon={<AddCircleOutlineIcon />}
                                 className="icon-button"
+                                onClick={handleClickCreateExam}
                             >
-                                Create new question
+                                Create new exam
                             </Button>
                         </Grid>
                     </Grid>
