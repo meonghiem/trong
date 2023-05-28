@@ -24,6 +24,11 @@ export default function NewExam() {
         setEndTimeCovert(endTime && dayjs(endTime).format('YYYY/MM/DD HH:mm:ss'));
     }, [startTime, endTime])
 
+    useEffect(() => {
+        console.log(startTimeConvert);
+        console.log(endTimeConvert);
+    },)
+
     if (!isLogin) {
         return <Navigate replace to="/" />
     }

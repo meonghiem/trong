@@ -20,6 +20,26 @@ import { useNavigate } from "react-router-dom";
 
 export default function CardContainer(props) {
   // const { imgUrl, name, idExam, startDate, endDate, status } = props;
+  const compareTime = (dateString) => {
+    const dateParts = dateString.split(" - ");
+    const date = dateParts[0];
+    const time = dateParts[1];
+    const [day, month, year] = date.split("/");
+    const [hours, minutes, seconds] = time.split(":");
+
+    // Chuyển đổi chuỗi thời gian thành đối tượng Date
+    const targetDate = new Date(`${year}-${month}-${day}T${hours}:${minutes}:${seconds}`);
+
+    // Lấy thời gian hiện tại
+    const currentDate = new Date();
+
+    // So sánh thời gian
+    if (targetDate < currentDate) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const navigate = useNavigate();
 
@@ -72,7 +92,8 @@ export default function CardContainer(props) {
                 color="text.secondary"
                 component="div"
               >
-                Ended - {props.endDate}
+                {/* Ended : {props.endDate} */}
+                Ended : {compareTime(props.endDate) ? <span style={{ color: 'red' }}>{props.endDate}</span> : <span style={{ color: 'green' }}>{props.endDate}</span>}
               </Typography>
             )}
             {props.Time && (
