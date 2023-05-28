@@ -9,17 +9,9 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-// type CardContainerProps{
-//   img: String
-//   name: String
-//   idExam: String
-//   startDate: String
-//   endDate: String
-//   status : String
-// }
 
 export default function CardContainer(props) {
-  // const { imgUrl, name, idExam, startDate, endDate, status } = props;
+
   const compareTime = (dateString) => {
     const dateParts = dateString.split(" - ");
     const date = dateParts[0];
@@ -96,6 +88,7 @@ export default function CardContainer(props) {
                 Ended : {compareTime(props.endDate) ? <span style={{ color: 'red' }}>{props.endDate}</span> : <span style={{ color: 'green' }}>{props.endDate}</span>}
               </Typography>
             )}
+            {/* Dành cho kết quả bài thi */}
             {props.Time && (
               <Typography
                 variant="subtitle1"
@@ -105,6 +98,7 @@ export default function CardContainer(props) {
                 Time - {props.Time}
               </Typography>
             )}
+            {/* Dành cho kết quả bài thi */}
             {props.point && (
               <Typography
                 variant="subtitle1"
@@ -129,13 +123,13 @@ export default function CardContainer(props) {
                 Status : {props.status}
               </Typography>
             )}
-            {props.isOpen && (
-              <Typography
-                variant="subtitle1"
-                color="text.secondary"
-                component="div"
-              >
-                {props.isOpen === 1 ? <span style={{ color: 'green' }}>Open</span> : <span style={{ color: 'red' }}>Closed</span>}
+            {props.isOpen === 1 ? (
+              <Typography variant="subtitle1" color="text.secondary" component="div">
+                <span style={{ color: 'green' }}>Open</span>
+              </Typography>
+            ) : (
+              <Typography variant="subtitle1" color="text.secondary" component="div">
+                <span style={{ color: 'red' }}>Closed</span>
               </Typography>
             )}
 
