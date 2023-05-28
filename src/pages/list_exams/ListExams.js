@@ -75,6 +75,7 @@ export default function ListExams() {
                                                 endDate={handleTime(exam.end_time)}
                                                 status={exam.state}
                                                 key={exam.title + exam.id}
+                                                isOpen={exam.is_open}
                                             />
                                         </div>
                                     ))}

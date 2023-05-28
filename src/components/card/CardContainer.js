@@ -108,6 +108,16 @@ export default function CardContainer(props) {
                 Status : {props.status}
               </Typography>
             )}
+            {props.isOpen && (
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                component="div"
+              >
+                {props.isOpen === 1 ? <span style={{ color: 'green' }}>Open</span> : <span style={{ color: 'red' }}>Closed</span>}
+              </Typography>
+            )}
+
           </CardContent>
           <CardActions>
             {!props.point ? (
@@ -116,6 +126,7 @@ export default function CardContainer(props) {
                   size="small"
                   className="icon-button"
                   onClick={handleClickView}
+                  disabled={props.isOpen === 1 ? false : true}
                 >
                   View
                 </Button>
@@ -131,6 +142,6 @@ export default function CardContainer(props) {
           </CardActions>
         </Box>
       </Card>
-    </div>
+    </div >
   );
 }

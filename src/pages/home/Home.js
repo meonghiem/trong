@@ -102,7 +102,7 @@ export default function Home() {
             <div className="row">
               {/* Hiển thị danh sách các bài thi đã tham gia */}
               <div className="col-7">
-                <div className="header font-weight-bold font h2" style={{ color: "white" }}>List of participated exams</div>
+                <div className="header font-weight-bold font h2" style={{ color: "white" }}>List of public exams</div>
                 {cardList.map((card, id) => {
                   return (
                     <div className="mt-3" key={id}>
@@ -148,7 +148,7 @@ export default function Home() {
           </div>
         </div>
       </>
-  
+
     );
   }
 }
