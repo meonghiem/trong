@@ -9,17 +9,29 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-// type CardContainerProps{
-//   img: String
-//   name: String
-//   idExam: String
-//   startDate: String
-//   endDate: String
-//   status : String
-// }
 
 export default function CardContainer(props) {
-  // const { imgUrl, name, idExam, startDate, endDate, status } = props;
+
+  const compareTime = (dateString) => {
+    const dateParts = dateString.split(" - ");
+    const date = dateParts[0];
+    const time = dateParts[1];
+    const [day, month, year] = date.split("/");
+    const [hours, minutes, seconds] = time.split(":");
+
+    // Chuyển đổi chuỗi thời gian thành đối tượng Date
+    const targetDate = new Date(`${year}-${month}-${day}T${hours}:${minutes}:${seconds}`);
+
+    // Lấy thời gian hiện tại
+    const currentDate = new Date();
+
+    // So sánh thời gian
+    if (targetDate < currentDate) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const navigate = useNavigate();
 
@@ -71,9 +83,11 @@ export default function CardContainer(props) {
                 color="text.secondary"
                 component="div"
               >
-                Ended - {props.endDate}
+                {/* Ended : {props.endDate} */}
+                Ended : {compareTime(props.endDate) ? <span style={{ color: 'red' }}>{props.endDate}</span> : <span style={{ color: 'green' }}>{props.endDate}</span>}
               </Typography>
             )}
+            {/* Dành cho kết quả bài thi */}
             {props.Time && (
               <Typography
                 variant="subtitle1"
@@ -83,6 +97,7 @@ export default function CardContainer(props) {
                 Time - {props.Time}
               </Typography>
             )}
+            {/* Dành cho kết quả bài thi */}
             {props.point && (
               <Typography
                 variant="subtitle1"
@@ -107,6 +122,16 @@ export default function CardContainer(props) {
                 Status : {props.status}
               </Typography>
             )}
+            {props.isOpen === 1 ? (
+              <Typography variant="subtitle1" color="text.secondary" component="div">
+                <span style={{ color: 'green' }}>Open</span>
+              </Typography>
+            ) : (
+              <Typography variant="subtitle1" color="text.secondary" component="div">
+                <span style={{ color: 'red' }}>Closed</span>
+              </Typography>
+            )}
+
           </CardContent>
           <CardActions>
             {!props.point ? (
@@ -115,6 +140,7 @@ export default function CardContainer(props) {
                   size="small"
                   className="icon-button"
                   onClick={handleClickView}
+                  disabled={props.isOpen === 1 ? false : true}
                 >
                   View
                 </Button>
@@ -129,6 +155,6 @@ export default function CardContainer(props) {
           </CardActions>
         </Box>
       </Card>
-    </div>
+    </div >
   );
 }

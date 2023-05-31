@@ -44,7 +44,7 @@ export default function Exam(props) {
         <div>
             <Grid container justifyContent="center">
                 <Grid item xs={12}>
-                    <Header props="Exam" />
+                    <Header page="List exams" />
                 </Grid>
 
                 <Grid item xs={10} sx={{ marginTop: '90px' }} >

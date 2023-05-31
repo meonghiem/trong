@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
@@ -11,6 +11,8 @@ import CreateExam from "./pages/create_exam/CreateExam";
 import Profile from "./pages/profile/Profile";
 import Exam from "./components/common/exam/Exam";
 import ExamContent from "./components/common/exam/ExamContent";
+import Cookies from "js-cookie";
+import NewExam from "./pages/new_exam/NewExam";
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="list_exams" element={<ListExams />} />
           <Route path="create_exam" element={<CreateExam />} />
+          {/* <Route path="result_exams" element={<ResultExams />} /> */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/list_exams/exam/:id" element={<ExamWrapper />} />
           <Route
@@ -37,7 +40,12 @@ function App() {
 
 function ExamWrapper() {
   const { id } = useParams();
-  return <Exam id={id} />;
+  const isLogin = Cookies.get("isLogin") === "true";
+  if (!isLogin) {
+    return <Navigate replace to="/" />;
+  } else {
+    return <Exam id={id} />;
+  }
 }
 
 function ExamContentWrapper() {

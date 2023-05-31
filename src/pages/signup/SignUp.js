@@ -7,8 +7,9 @@ import KeyIcon from '@mui/icons-material/Key';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import validator from "validator";
+import Cookies from "js-cookie";
 
 export default function SignUp() {
     const [userName, setUserName] = useState("");
@@ -22,6 +23,7 @@ export default function SignUp() {
     const [phone, setPhone] = useState("");
     const navigate = useNavigate()
     const [openDialog, setOpenDialog] = useState(false);
+    const errorColor = errPasswordUserConfirm === "Confirmation password is incorrect" ? "red" : "green";
 
     useEffect(() => {
         setPasswordUserConfirm("")
@@ -134,168 +136,176 @@ export default function SignUp() {
         handleOpenDialog();
     }
 
-    return (
-        <div>
-            <Container maxWidth="sm">
-                <Grid
-                    container
-                    spacing={3}
-                    direction="column"
-                    justifyContent="center"
-                    style={{ minHeight: "100vh" }}>
-                    <Paper elevation={20} sx={{ padding: 4, margin: 5 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 1 }}>
-                            <h1 style={{ color: 'dodgerblue' }}> SIGN UP </h1>
-                        </Box>
-                        <form>
-                            <Grid container spacing={5} direction="column">
-                                {/* User name */}
-                                <Grid item>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        type={"text"}
-                                        id="nameUser"
-                                        label="User name"
-                                        value={userName}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <DriveFileRenameOutlineIcon />
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        variant="outlined"
-                                        placeholder="Please enter your name"
-                                        onChange={(e) => setUserName(e.target.value)}
-                                        helperText={userName === "" ? "" : errUserName}
-                                    />
+    const checkLogin = (Cookies.get('isLogin') === 'true');
+
+    if (checkLogin) {
+        //Redirect
+        return <Navigate replace to="/home" />
+    }
+    else {
+        return (
+            <div>
+                <Container maxWidth="sm">
+                    <Grid
+                        container
+                        spacing={3}
+                        direction="column"
+                        justifyContent="center"
+                        style={{ minHeight: "100vh" }}>
+                        <Paper elevation={20} sx={{ padding: 4, margin: 5 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 1 }}>
+                                <h1 style={{ color: 'dodgerblue' }}> SIGN UP </h1>
+                            </Box>
+                            <form>
+                                <Grid container spacing={5} direction="column">
+                                    {/* User name */}
+                                    <Grid item>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            type={"text"}
+                                            id="nameUser"
+                                            label="User name"
+                                            value={userName}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <DriveFileRenameOutlineIcon />
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                            variant="outlined"
+                                            placeholder="Please enter your name"
+                                            onChange={(e) => setUserName(e.target.value)}
+                                            helperText={userName === "" ? "" : <span style={{ color: "red" }}>{errUserName}</span>}
+                                        />
+                                    </Grid>
+                                    {/* Email user */}
+                                    <Grid item>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            type={"email"}
+                                            id="emailUser"
+                                            label="Email"
+                                            value={emailUser}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <AccountCircle />
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                            variant="outlined"
+                                            placeholder="Please enter your email"
+                                            onChange={(e) => setEmailUser(e.target.value)}
+                                            helperText={emailUser === "" ? "" : <span style={{ color: "red" }}>{errEmail}</span>}
+                                        />
+                                    </Grid>
+                                    {/* Password user */}
+                                    <Grid item>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            type={"password"}
+                                            id={"passwordUser"}
+                                            label="Password"
+                                            value={passwordUser}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <KeyIcon />
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                            variant="outlined"
+                                            placeholder="Please enter your password"
+                                            onChange={(e) => setPasswordUser(e.target.value)}
+                                        />
+                                    </Grid>
+                                    {/* Confirm password */}
+                                    <Grid item>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            type={"password"}
+                                            id={"passwordUserConfirm"}
+                                            label="Confirm password"
+                                            value={passwordUserConfirm}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <KeyIcon />
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                            variant="outlined"
+                                            placeholder="Please confirm your password"
+                                            onChange={(e) => setPasswordUserConfirm(e.target.value)}
+                                            //Cần nhập passwordUser trước
+                                            disabled={passwordUser === ""}
+                                            helperText={passwordUserConfirm === "" ? "" : <span style={{ color: errorColor }}>{errPasswordUserConfirm}</span>}
+                                        />
+                                    </Grid>
+                                    {/* Selection gender */}
+                                    <Grid item>
+                                        <FormLabel>Selection your gender</FormLabel>
+                                        <RadioGroup
+                                            row name="selection-gender"
+                                            onChange={(e) => setGender(e.target.value)}
+                                            required
+                                        >
+                                            <FormControlLabel value="male" control={<Radio />} label="Male" />
+                                            <FormControlLabel value="female" control={<Radio />} label="Female" />
+                                        </RadioGroup>
+                                    </Grid>
+                                    {/* Phone user */}
+                                    <Grid item>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            type={"text"}
+                                            id="phoneUser"
+                                            label="Your phone"
+                                            value={phone}
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <PhoneIcon />
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                            variant="outlined"
+                                            placeholder="Please enter your phone"
+                                            onChange={(e) => setPhone(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item>
+                                        <Button
+                                            variant="contained"
+                                            onClick={handleClickSignUp}
+                                            title="Click to accept sign up">
+                                            Sign Up
+                                        </Button>
+                                    </Grid>
                                 </Grid>
-                                {/* Email user */}
-                                <Grid item>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        type={"email"}
-                                        id="emailUser"
-                                        label="Email"
-                                        value={emailUser}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <AccountCircle />
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        variant="outlined"
-                                        placeholder="Please enter your email"
-                                        onChange={(e) => setEmailUser(e.target.value)}
-                                        helperText={emailUser === "" ? "" : errEmail}
-                                    />
-                                </Grid>
-                                {/* Password user */}
-                                <Grid item>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        type={"password"}
-                                        id={"passwordUser"}
-                                        label="Password"
-                                        value={passwordUser}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <KeyIcon />
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        variant="outlined"
-                                        placeholder="Please enter your password"
-                                        onChange={(e) => setPasswordUser(e.target.value)}
-                                    />
-                                </Grid>
-                                {/* Confirm password */}
-                                <Grid item>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        type={"password"}
-                                        id={"passwordUserConfirm"}
-                                        label="Confirm password"
-                                        value={passwordUserConfirm}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <KeyIcon />
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        variant="outlined"
-                                        placeholder="Please confirm your password"
-                                        onChange={(e) => setPasswordUserConfirm(e.target.value)}
-                                        //Cần nhập passwordUser trước
-                                        disabled={passwordUser === ""}
-                                        helperText={passwordUserConfirm === "" ? "" : errPasswordUserConfirm}
-                                    />
-                                </Grid>
-                                {/* Selection gender */}
-                                <Grid item>
-                                    <FormLabel>Selection your gender</FormLabel>
-                                    <RadioGroup
-                                        row name="selection-gender"
-                                        onChange={(e) => setGender(e.target.value)}
-                                        required
-                                    >
-                                        <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                        <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                    </RadioGroup>
-                                </Grid>
-                                {/* Phone user */}
-                                <Grid item>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        type={"text"}
-                                        id="phoneUser"
-                                        label="Your phone"
-                                        value={phone}
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <PhoneIcon />
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        variant="outlined"
-                                        placeholder="Please enter your phone"
-                                        onChange={(e) => setPhone(e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item>
-                                    <Button
-                                        variant="contained"
-                                        onClick={handleClickSignUp}
-                                        title="Click to accept sign up">
-                                        Sign Up
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </form>
-                    </Paper>
-                </Grid>
-                <Dialog open={openDialog} onClose={() => handleCloseDialog("")} disableEscapeKeyDown={true}>
-                    <DialogTitle>Confirm</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Confirm account registration
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => handleCloseDialog("Yes")}>Yes</Button>
-                        <Button onClick={() => handleCloseDialog("No")}>No</Button>
-                    </DialogActions>
-                </Dialog>
-            </Container>
-        </div>
-    )
+                            </form>
+                        </Paper>
+                    </Grid>
+                    <Dialog open={openDialog} onClose={() => handleCloseDialog("")} disableEscapeKeyDown={true}>
+                        <DialogTitle>Confirm</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Confirm account registration
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => handleCloseDialog("Yes")}>Yes</Button>
+                            <Button onClick={() => handleCloseDialog("No")}>No</Button>
+                        </DialogActions>
+                    </Dialog>
+                </Container>
+            </div>
+        )
+    }
 }
